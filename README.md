@@ -1,3 +1,3 @@
-# Vite, React, Typescript, Eslint + Prettier
+# Alt + Shift
 
-Starter React application with Typescript and Vite with Eslint (with AirBnB plugin) and Prettier.
+A minimal React note taking & drag and drop application using native dnd capabilities.  Powered by Vite, React, Typescript, Eslint + Prettier.
