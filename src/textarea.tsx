@@ -12,12 +12,12 @@ function generateText(
   const indent = '  ';
   const recurse = (obj: ColumnType | ItemType, level: number) => {
     for (const itemid of obj.contentids) {
-      text = text.concat(`\n${indent.repeat(level)}${items[itemid].text}`);
+      text = text.concat(`${indent.repeat(level)}${items[itemid].text}\n`);
       recurse(items[itemid], level + 1);
     }
   };
   recurse(obj, 0);
-  return text;
+  return text.substring(0, text.length - 1);
 }
 
 type TextAreaProps = {
@@ -39,11 +39,18 @@ export default function TextArea({ columns, items }: TextAreaProps) {
     console.log(value);
   };
 
+  const forceUpdate = () => {
+    setValue(generateText(columns.col1, items));
+  };
+
   return (
     <>
       <textarea value={value} onChange={handleUpdate} spellCheck="false" />
       <button type="button" onClick={handleClick}>
         log to console
+      </button>
+      <button type="button" onClick={forceUpdate}>
+        update
       </button>
     </>
   );

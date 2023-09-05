@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable no-console */
 /* eslint-disable no-useless-return */
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import initialData from './data';
 import { ItemType } from './types';
@@ -93,6 +93,17 @@ function App() {
   const [draggedId, setDraggedId] = useState<string>('n/a');
 
   const { columns, items } = state;
+
+  useEffect(() => {
+    const handleKeyPress = (e: KeyboardEvent) => {
+      if (e.altKey && e.shiftKey) console.log('alt+shift!');
+    };
+    window.addEventListener('keydown', handleKeyPress);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyPress);
+    };
+  }, []);
 
   const handleDragEnd = () => {
     setDraggedId('n/a');
