@@ -2,7 +2,7 @@
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable no-console */
 import { useState } from 'react';
-import { ColumnType, ItemType } from './types';
+import { ColumnType, ItemType } from '../types';
 
 function generateText(
   obj: ColumnType | ItemType,

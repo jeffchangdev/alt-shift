@@ -5,8 +5,9 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import initialData from './data';
-import { ItemType } from './types';
-import TextArea from './textarea';
+import { ColumnDiv, ColumnTitle, Column } from './components/column';
+import Item from './components/item';
+import TextArea from './components/textarea';
 
 const AppDiv = styled.div``;
 
@@ -17,76 +18,6 @@ const ColumnsArea = styled.div`
   align-items: stretch;
   gap: 10px;
 `;
-
-const ColumnDiv = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 200px;
-  border: 1px solid lightgrey;
-  align-items: stretch;
-`;
-
-const ColumnTitle = styled.div`
-  margin-bottom: 8px;
-`;
-
-type ColumnProps = {
-  columnid: string;
-  text: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  children: any;
-};
-
-function Column({ columnid, text, children }: ColumnProps) {
-  return (
-    <ColumnDiv key={columnid}>
-      <ColumnTitle>{text}</ColumnTitle>
-      {children}
-    </ColumnDiv>
-  );
-}
-
-type ItemProps = {
-  itemid: string;
-  items: { [key: string]: ItemType };
-  level: number;
-  onDragEnd: any;
-  onDragStart: any;
-  onDrop: any;
-  onDragOver: any;
-};
-
-function Item({ itemid, items, level, ...eventHandlers }: ItemProps) {
-  const { text, contentids } = items[itemid];
-  const spaces = '\u00A0\u00A0\u00A0\u00A0'.repeat(level);
-
-  return (
-    <>
-      <div
-        draggable
-        onDragEnd={eventHandlers.onDragEnd}
-        onDragStart={(e) => eventHandlers.onDragStart(e, itemid)}
-        onDrop={(e) => eventHandlers.onDrop(e, itemid)}
-        onDragOver={eventHandlers.onDragOver}
-      >
-        {' '}
-        {spaces + text}{' '}
-      </div>
-      {contentids.map((itemid) => {
-        return (
-          <Item
-            itemid={itemid}
-            items={items}
-            key={itemid}
-            level={level + 1}
-            // eslint-disable-next-line react/jsx-props-no-spreading
-            {...eventHandlers}
-          />
-        );
-      })}
-    </>
-  );
-}
 
 function App() {
   const [state, setState] = useState(initialData);
