@@ -6,6 +6,7 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import initialData from './data';
 import { ItemType } from './types';
+import TextArea from './textarea';
 
 const AppDiv = styled.div``;
 
@@ -204,8 +205,8 @@ function App() {
           );
         })}
         <ColumnDiv>
-          <ColumnTitle>Test Column</ColumnTitle>
-          <textarea>Enter some text here...</textarea>
+          <ColumnTitle>test column</ColumnTitle>
+          <TextArea columns={columns} items={items} />
         </ColumnDiv>
       </ColumnsArea>
     </AppDiv>
