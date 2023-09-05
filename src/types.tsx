@@ -6,7 +6,7 @@ export interface ColumnType {
 
 export interface ItemType {
   id: string;
-  parentid: string | null;
+  parentid: string;
   text: string;
   contentids: string[];
 }

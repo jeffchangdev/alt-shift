@@ -16,7 +16,7 @@ const columns: { [key: string]: ColumnType } = {
 const items: { [key: string]: ItemType } = {
   item1: {
     id: 'item1',
-    parentid: null,
+    parentid: 'col1',
     text: 'planet express',
     contentids: ['item2', 'item3', 'item4', 'item6', 'item7', 'item9'],
   },
@@ -70,7 +70,7 @@ const items: { [key: string]: ItemType } = {
   },
   item10: {
     id: 'item10',
-    parentid: null,
+    parentid: 'col1',
     text: 'momcorp',
     contentids: ['item11'],
   },
@@ -100,7 +100,7 @@ const items: { [key: string]: ItemType } = {
   },
   item15: {
     id: 'item15',
-    parentid: null,
+    parentid: 'col2',
     text: 'dreamland',
     contentids: ['item16', 'item19', 'item20'],
   },
