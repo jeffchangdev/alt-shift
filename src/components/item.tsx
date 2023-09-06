@@ -19,7 +19,7 @@ export default function Item({
   ...eventHandlers
 }: ItemProps) {
   const { text, contentids } = items[itemid];
-  const spaces = '\u00A0\u00A0\u00A0\u00A0'.repeat(level);
+  const spaces = '\u00A0\u00A0'.repeat(level);
 
   return (
     <>
@@ -30,8 +30,7 @@ export default function Item({
         onDrop={(e) => eventHandlers.onDrop(e, itemid)}
         onDragOver={eventHandlers.onDragOver}
       >
-        {' '}
-        {spaces + text}{' '}
+        {spaces + text}
       </div>
       {contentids.map((itemid: string) => {
         return (

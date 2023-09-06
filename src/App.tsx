@@ -116,7 +116,14 @@ function App() {
       <ColumnsArea>
         {Object.values(columns).map(({ id, text, contentids }) => {
           return (
-            <Column key={id} columnid={id} text={text}>
+            <Column
+              key={id}
+              columnid={id}
+              text={text}
+              onDragEnd={handleDragEnd}
+              onDrop={handleColumnDrop}
+              onDragOver={handleDragOver}
+            >
               {contentids.map((itemid) => {
                 return (
                   <Item
@@ -131,18 +138,6 @@ function App() {
                   />
                 );
               })}
-              <div
-                onDragEnd={handleDragEnd}
-                onDrop={(e) => handleColumnDrop(e, id)}
-                onDragOver={handleDragOver}
-                style={{
-                  flexGrow: 9999,
-                  border: '1px dashed gray',
-                  color: 'gray',
-                }}
-              >
-                column drop zone
-              </div>
             </Column>
           );
         })}

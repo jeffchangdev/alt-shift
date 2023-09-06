@@ -35,8 +35,7 @@ export default function TextArea({ columns, items }: TextAreaProps) {
   };
 
   const handleClick = () => {
-    // console.log(JSON.stringify(value));
-    console.log(value);
+    console.log(JSON.stringify(value));
   };
 
   const forceUpdate = () => {
