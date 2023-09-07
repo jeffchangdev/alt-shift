@@ -22,6 +22,7 @@ const ColumnsArea = styled.div`
 `;
 
 function App() {
+  const [store, setStore] = useState<{ [key: string]: string }>({});
   const [columns, setColumns] = useState(columnData);
   const [items, setItems] = useState(itemData);
   const [draggedId, setDraggedId] = useState<string>('n/a');
@@ -32,7 +33,6 @@ function App() {
       if (e.altKey && e.shiftKey) {
         console.log('alt+shift!');
         setMode(mode === 'items' ? 'text' : 'items');
-        console.log(`new mode,${mode}`);
       }
     };
     window.addEventListener('keydown', handleKeyPress);
@@ -41,6 +41,11 @@ function App() {
       window.removeEventListener('keydown', handleKeyPress);
     };
   }, [mode]);
+
+  const updateStore = (colid: string, value: string) => {
+    const newstore = { ...store, colid: value };
+    setStore(newstore);
+  };
 
   if (mode === 'text') {
     return (

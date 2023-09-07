@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ColumnDiv, ColumnTitle } from './styledComponents';
 import { ColumnType, ItemType } from '../types';
 
@@ -29,6 +29,10 @@ type TextColumnProps = {
 export default function TextColumn({ obj, items }: TextColumnProps) {
   const columnText = generateText(obj, items);
   const [value, setValue] = useState(columnText);
+
+  useEffect(() => {
+    return () => console.log(obj.id + " dismounted")
+  }, []);
 
   const handleUpdate = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setValue(e.target.value);
