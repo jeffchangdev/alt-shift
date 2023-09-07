@@ -1,6 +1,6 @@
 import { ColumnType, ItemType } from './types';
 
-const columns: { [key: string]: ColumnType } = {
+export const columnData: { [key: string]: ColumnType } = {
   col1: {
     id: 'col1',
     text: 'futurama',
@@ -13,7 +13,7 @@ const columns: { [key: string]: ColumnType } = {
   },
 };
 
-const items: { [key: string]: ItemType } = {
+export const itemData: { [key: string]: ItemType } = {
   item1: {
     id: 'item1',
     parentid: 'col1',
@@ -135,6 +135,3 @@ const items: { [key: string]: ItemType } = {
     contentids: [],
   },
 };
-
-const state = { columns, items };
-export default state;

@@ -11,4 +11,5 @@ textarea
    border: none;
    outline: none;
    resize: none;
+   height: 500px;
 }

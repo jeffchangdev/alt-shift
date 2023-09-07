@@ -4,10 +4,12 @@
 /* eslint-disable no-useless-return */
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import initialData from './data';
-import { ColumnDiv, ColumnTitle, Column } from './components/column';
-import Item from './components/item';
-import TextArea from './components/textarea';
+import { columnData, itemData } from './data';
+import { ColumnDiv, ColumnTitle } from './components/styledComponents';
+import ItemsColumn from './components/ItemsColumn';
+import TextColumn from './components/TextColumn';
+import Item from './components/Item';
+import TextArea from './components/TextArea';
 
 const AppDiv = styled.div``;
 
@@ -20,21 +22,41 @@ const ColumnsArea = styled.div`
 `;
 
 function App() {
-  const [state, setState] = useState(initialData);
+  const [columns, setColumns] = useState(columnData);
+  const [items, setItems] = useState(itemData);
   const [draggedId, setDraggedId] = useState<string>('n/a');
-
-  const { columns, items } = state;
+  const [mode, setMode] = useState('items');
 
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
-      if (e.altKey && e.shiftKey) console.log('alt+shift!');
+      if (e.altKey && e.shiftKey) {
+        console.log('alt+shift!');
+        setMode(mode === 'items' ? 'text' : 'items');
+        console.log(`new mode,${mode}`);
+      }
     };
     window.addEventListener('keydown', handleKeyPress);
 
     return () => {
       window.removeEventListener('keydown', handleKeyPress);
     };
-  }, []);
+  }, [mode]);
+
+  if (mode === 'text') {
+    return (
+      <AppDiv>
+        <ColumnsArea>
+          {Object.values(columns).map((column) => {
+            return <TextColumn key={column.id} obj={column} items={items} />;
+          })}
+          <ColumnDiv>
+            <ColumnTitle>test column</ColumnTitle>
+            <TextArea columns={columns} items={items} />
+          </ColumnDiv>
+        </ColumnsArea>
+      </AppDiv>
+    );
+  }
 
   const handleDragEnd = () => {
     setDraggedId('n/a');
@@ -79,8 +101,8 @@ function App() {
     newContentids.splice(newIndex, 0, draggedId);
     items[draggedId].parentid = newParentId;
 
-    const newState = { ...state };
-    setState(newState);
+    setColumns({ ...columns });
+    setItems({ ...items });
   };
 
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
@@ -107,47 +129,49 @@ function App() {
     columns[newParentId].contentids.push(draggedId);
     items[draggedId].parentid = newParentId;
 
-    const newState = { ...state };
-    setState(newState);
+    setColumns({ ...columns });
+    setItems({ ...items });
   };
 
-  return (
-    <AppDiv>
-      <ColumnsArea>
-        {Object.values(columns).map(({ id, text, contentids }) => {
-          return (
-            <Column
-              key={id}
-              columnid={id}
-              text={text}
-              onDragEnd={handleDragEnd}
-              onDrop={handleColumnDrop}
-              onDragOver={handleDragOver}
-            >
-              {contentids.map((itemid) => {
-                return (
-                  <Item
-                    key={itemid}
-                    itemid={itemid}
-                    items={items}
-                    level={0}
-                    onDragEnd={handleDragEnd}
-                    onDragStart={handleDragStart}
-                    onDrop={handleDrop}
-                    onDragOver={handleDragOver}
-                  />
-                );
-              })}
-            </Column>
-          );
-        })}
-        <ColumnDiv>
-          <ColumnTitle>test column</ColumnTitle>
-          <TextArea columns={columns} items={items} />
-        </ColumnDiv>
-      </ColumnsArea>
-    </AppDiv>
-  );
+  if (mode === 'items') {
+    return (
+      <AppDiv>
+        <ColumnsArea>
+          {Object.values(columns).map(({ id, text, contentids }) => {
+            return (
+              <ItemsColumn
+                key={id}
+                columnid={id}
+                text={text}
+                onDragEnd={handleDragEnd}
+                onDrop={handleColumnDrop}
+                onDragOver={handleDragOver}
+              >
+                {contentids.map((itemid) => {
+                  return (
+                    <Item
+                      key={itemid}
+                      itemid={itemid}
+                      items={items}
+                      level={0}
+                      onDragEnd={handleDragEnd}
+                      onDragStart={handleDragStart}
+                      onDrop={handleDrop}
+                      onDragOver={handleDragOver}
+                    />
+                  );
+                })}
+              </ItemsColumn>
+            );
+          })}
+          <ColumnDiv>
+            <ColumnTitle>test column</ColumnTitle>
+            <TextArea columns={columns} items={items} />
+          </ColumnDiv>
+        </ColumnsArea>
+      </AppDiv>
+    );
+  }
 }
 
 export default App;

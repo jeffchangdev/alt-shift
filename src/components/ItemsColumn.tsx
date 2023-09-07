@@ -1,19 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import styled from 'styled-components';
+import { ColumnDiv, ColumnTitle } from './styledComponents';
 
-export const ColumnDiv = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 200px;
-  border: 1px solid lightgrey;
-  align-items: stretch;
-`;
-
-export const ColumnTitle = styled.div`
-  margin-bottom: 8px;
-`;
-
-type ColumnProps = {
+type ItemsColumnProps = {
   columnid: string;
   text: string;
   children: any;
@@ -22,14 +10,14 @@ type ColumnProps = {
   onDragOver: (e: React.DragEvent<HTMLDivElement>) => void;
 };
 
-export function Column({
+export default function ItemsColumn({
   columnid,
   text,
   children,
   onDragEnd,
   onDrop,
   onDragOver,
-}: ColumnProps) {
+}: ItemsColumnProps) {
   return (
     <ColumnDiv key={columnid}>
       <ColumnTitle>{text}</ColumnTitle>
