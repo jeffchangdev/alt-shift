@@ -4,12 +4,15 @@
 /* eslint-disable no-useless-return */
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { columnData, itemData } from './data';
+import { columnData, itemData, futurama, disenchantment } from './data';
 import { ColumnDiv, ColumnTitle } from './components/styledComponents';
+import { ColumnType, ItemType, StoreType } from './types';
 import ItemsColumn from './components/ItemsColumn';
 import TextColumn from './components/TextColumn';
 import Item from './components/Item';
 import TextArea from './components/TextArea';
+import createItems from './utils/createItems';
+import createValues from './utils/createValues';
 
 const AppDiv = styled.div``;
 
@@ -22,42 +25,57 @@ const ColumnsArea = styled.div`
 `;
 
 function App() {
-  const [store, setStore] = useState<{ [key: string]: string }>({});
-  const [columns, setColumns] = useState(columnData);
-  const [items, setItems] = useState(itemData);
-  const [draggedId, setDraggedId] = useState<string>('n/a');
-  const [mode, setMode] = useState('items');
+  const [store, setStore] = useState<StoreType>({
+    col1: { id: 'col1', text: 'futurama', value: futurama },
+    col2: { id: 'col2', text: 'disenchantment', value: disenchantment },
+  });
+  const [columns, setColumns] = useState<{ [key: string]: ColumnType }>(
+    columnData
+  );
+  const [items, setItems] = useState<{ [key: string]: ItemType }>(itemData);
+  const [draggedId, setDraggedId] = useState<string>('');
+  const [mode, setMode] = useState<'text' | 'items'>('text');
 
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
       if (e.altKey && e.shiftKey) {
         console.log('alt+shift!');
-        setMode(mode === 'items' ? 'text' : 'items');
+        console.log(store);
+        if (mode === 'text') {
+          const { appcolumns, appitems } = createItems(store);
+          setColumns(appcolumns);
+          setItems(appitems);
+          setMode('items');
+        } else {
+          // mode ==="items"
+          const newstore = createValues(columns, items);
+          setStore(newstore);
+          setMode('text');
+        }
       }
     };
     window.addEventListener('keydown', handleKeyPress);
-
     return () => {
       window.removeEventListener('keydown', handleKeyPress);
     };
-  }, [mode]);
-
-  const updateStore = (colid: string, value: string) => {
-    const newstore = { ...store, colid: value };
-    setStore(newstore);
-  };
+  }, [mode, store, columns, items]);
 
   if (mode === 'text') {
+    const updateStore = (colid: string, value: string) => {
+      store[colid].value = value;
+    };
     return (
       <AppDiv>
         <ColumnsArea>
-          {Object.values(columns).map((column) => {
-            return <TextColumn key={column.id} obj={column} items={items} />;
+          {Object.values(store).map((col) => {
+            return (
+              <TextColumn
+                key={col.id}
+                col={col}
+                update={(value: string) => updateStore(col.id, value)}
+              />
+            );
           })}
-          <ColumnDiv>
-            <ColumnTitle>test column</ColumnTitle>
-            <TextArea columns={columns} items={items} />
-          </ColumnDiv>
         </ColumnsArea>
       </AppDiv>
     );

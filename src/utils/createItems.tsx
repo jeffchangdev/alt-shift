@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable no-continue */
 /* eslint-disable consistent-return */
 /* eslint-disable no-plusplus */
 /* eslint-disable no-restricted-syntax */
-import { ColumnType, ItemType } from '../types';
+import { ColumnType, ItemType, StoreType } from '../types';
 
 function countLeadingSpaces(str: string) {
   let count = 0;
@@ -23,19 +24,28 @@ function createItem(id: string, text: string) {
   };
 }
 
-export default function createColumnState(
+function createColumn(id: string, text: string, contentids: string[]) {
+  return {
+    id,
+    text,
+    contentids,
+  };
+}
+
+function createColumnState(
   colid: string,
+  value: string,
   counter: { current: number }
 ) {
   const itemidprefix = 'item';
-  const arr = text.split('\n');
+  const arr = value.split('\n');
 
   const stack: [number, ItemType][] = [];
   const items: { [key: string]: ItemType } = {};
   const contentids: string[] = [];
 
   for (let i = 0; i < arr.length; i++) {
-    if (text.length === 0) return { items: [], contentids: [] };
+    if (value.length === 0) return { items: [], contentids: [] };
 
     const str = arr[i];
     const spaces = countLeadingSpaces(str);
@@ -63,14 +73,15 @@ export default function createColumnState(
   return { items, contentids };
 }
 
-function createAppState(columns: { [key: string]: ColumnType }) {
-  const appcolumns = { ...columns };
+export default function createItems(store: StoreType) {
+  const appcolumns: { [key: string]: ColumnType } = {};
+  const appitems: { [key: string]: ItemType } = {};
   const counter = { current: 0 };
-  const appitems = {};
-  for (const colid of Object.keys(columns)) {
-    const { items, contentids } = createColumnState(colid, counter);
-    Object.assign(items, appitems);
-    appcolumns[colid].contentids = contentids;
+
+  for (const { id, text, value } of Object.values(store)) {
+    const { items, contentids } = createColumnState(id, value, counter);
+    appcolumns[id] = createColumn(id, text, contentids);
+    Object.assign(appitems, items);
   }
 
   return { appcolumns, appitems };

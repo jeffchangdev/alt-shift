@@ -135,3 +135,9 @@ export const itemData: { [key: string]: ItemType } = {
     contentids: [],
   },
 };
+
+export const futurama =
+  'planet express\n  phillip j fry\n  bender\n  leela\n    nibbler\n  zoidberg\n  amy wong\n  hermes conrad\nmomcorp\n  mom\n    walt\n    larry\n    igner';
+
+export const disenchantment =
+  'dreamland\n  bean\n    elfo\n    luci\n  king zog\n  king oona';

@@ -10,3 +10,11 @@ export interface ItemType {
   text: string;
   contentids: string[];
 }
+
+export type StoreType = {
+  [key: string]: {
+    id: string;
+    text: string;
+    value: string;
+  };
+};
