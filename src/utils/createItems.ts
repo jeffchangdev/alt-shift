@@ -5,33 +5,9 @@
 /* eslint-disable no-plusplus */
 /* eslint-disable no-restricted-syntax */
 import { ColumnType, ItemType, StoreType } from '../types';
+import { countLeadingSpaces, createItem, createColumn } from './utility';
 
-function countLeadingSpaces(str: string) {
-  let count = 0;
-  for (const char of str) {
-    if (char === ' ') count++;
-    else break;
-  }
-  return count;
-}
-
-function createItem(id: string, text: string) {
-  return {
-    id,
-    parentid: '',
-    text,
-    contentids: [],
-  };
-}
-
-function createColumn(id: string, text: string, contentids: string[]) {
-  return {
-    id,
-    text,
-    contentids,
-  };
-}
-
+// stack based approach for generating item state from text
 function createColumnState(
   colid: string,
   value: string,
@@ -73,6 +49,7 @@ function createColumnState(
   return { items, contentids };
 }
 
+// create item state across application
 export default function createItems(store: StoreType) {
   const appcolumns: { [key: string]: ColumnType } = {};
   const appitems: { [key: string]: ItemType } = {};

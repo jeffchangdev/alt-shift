@@ -2,6 +2,7 @@
 /* eslint-disable no-restricted-syntax */
 import { ColumnType, ItemType, StoreType } from '../types';
 
+// DFS approach to getting text from items in a column
 function generateText(
   obj: ColumnType | ItemType,
   items: { [key: string]: ItemType }
@@ -18,6 +19,7 @@ function generateText(
   return text.substring(0, text.length - 1);
 }
 
+// gets values from text areas across columns
 export default function createValues(
   columns: { [key: string]: ColumnType },
   items: { [key: string]: ItemType }
