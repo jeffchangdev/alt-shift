@@ -13,6 +13,7 @@ import Item from './components/Item';
 // import TextArea from './components/TextArea';
 import createItems from './utils/createItems';
 import createValues from './utils/createValues';
+import { checkIsValidDrop } from './utils/utility';
 
 const AppDiv = styled.div``;
 
@@ -106,6 +107,7 @@ function App() {
     const dropped = e.dataTransfer.getData('text/plain');
     console.log(`dataTansfer getData was: ${dropped}`);
     console.log(`item dropped on was ${items[droppedId].text}`);
+    if (checkIsValidDrop(droppedId, draggedId, items) === false) return;
 
     const oldParentId = items[draggedId].parentid;
     const newParentId = items[droppedId].parentid;
@@ -137,6 +139,8 @@ function App() {
     droppedId: string
   ) => {
     e.preventDefault();
+    if (checkIsValidDrop(droppedId, draggedId, items) === false) return;
+
     const draggedObject = items[draggedId];
     const oldParentId = draggedObject.parentid;
     const oldParent =
@@ -145,7 +149,7 @@ function App() {
         : columns[oldParentId];
     const newParent = items[droppedId];
 
-    if (oldParent.id === newParent.id) return;
+    if (newParent.id === oldParent.id) return;
 
     newParent.contentids.unshift(draggedId);
     oldParent.contentids = oldParent.contentids.filter(
