@@ -1,5 +1,29 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import styled from 'styled-components';
 import { ColumnDiv, ColumnTitle } from './styledComponents';
+
+/*
+const ColumnDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+  border: 1px solid lightgrey;
+  align-items: stretch;
+`;
+
+const ColumnTitle = styled.div`
+  margin-bottom: 8px;
+`;
+*/
+
+const Adjust = styled.div`
+  margin-left: 2px;
+  margin-top: 2px;
+`;
+
+const ColumnDropZoneDiv = styled.div`
+  font-size: 10px;
+`;
 
 type ItemsColumnProps = {
   columnid: string;
@@ -21,7 +45,7 @@ export default function ItemsColumn({
   return (
     <ColumnDiv key={columnid}>
       <ColumnTitle>{text}</ColumnTitle>
-      {children}
+      <Adjust>{children}</Adjust>
       <div
         onDragEnd={onDragEnd}
         onDrop={(e) => onDrop(e, columnid)}
@@ -32,7 +56,7 @@ export default function ItemsColumn({
           color: 'gray',
         }}
       >
-        column drop zone
+        <ColumnDropZoneDiv> column drop zone </ColumnDropZoneDiv>
       </div>
     </ColumnDiv>
   );

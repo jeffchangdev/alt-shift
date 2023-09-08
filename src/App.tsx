@@ -5,12 +5,12 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { columnData, itemData, futurama, disenchantment } from './data';
-import { ColumnDiv, ColumnTitle } from './components/styledComponents';
+// import { ColumnDiv, ColumnTitle } from './components/styledComponents';
 import { ColumnType, ItemType, StoreType } from './types';
 import ItemsColumn from './components/ItemsColumn';
 import TextColumn from './components/TextColumn';
 import Item from './components/Item';
-import TextArea from './components/TextArea';
+// import TextArea from './components/TextArea';
 import createItems from './utils/createItems';
 import createValues from './utils/createValues';
 
@@ -35,6 +35,10 @@ function App() {
   const [items, setItems] = useState<{ [key: string]: ItemType }>(itemData);
   const [draggedId, setDraggedId] = useState<string>('');
   const [mode, setMode] = useState<'text' | 'items'>('text');
+
+  window.store = store;
+  window.columns = columns;
+  window.items = items;
 
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
@@ -128,6 +132,29 @@ function App() {
     setItems({ ...items });
   };
 
+  const handleNestedDrop = (
+    e: React.DragEvent<HTMLDivElement>,
+    droppedId: string
+  ) => {
+    e.preventDefault();
+    const draggedObject = items[draggedId];
+    const oldParentId = draggedObject.parentid;
+    const oldParent =
+      items[oldParentId] !== undefined
+        ? items[oldParentId]
+        : columns[oldParentId];
+    const newParent = items[droppedId];
+
+    if (oldParent.id === newParent.id) return;
+
+    newParent.contentids.unshift(draggedId);
+    oldParent.contentids = oldParent.contentids.filter(
+      (id) => id !== draggedId
+    );
+    draggedObject.parentid = newParent.id;
+    setItems({ ...items });
+  };
+
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
   };
@@ -180,6 +207,7 @@ function App() {
                       onDragEnd={handleDragEnd}
                       onDragStart={handleDragStart}
                       onDrop={handleDrop}
+                      onNestedDrop={handleNestedDrop}
                       onDragOver={handleDragOver}
                     />
                   );
@@ -187,10 +215,10 @@ function App() {
               </ItemsColumn>
             );
           })}
-          <ColumnDiv>
+          {/* <ColumnDiv>
             <ColumnTitle>test column</ColumnTitle>
             <TextArea columns={columns} items={items} />
-          </ColumnDiv>
+        </ColumnDiv> */}
         </ColumnsArea>
       </AppDiv>
     );
