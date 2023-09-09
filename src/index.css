@@ -3,13 +3,20 @@ body {
   font-size: 13px;
 }
 
+input {
+  font-family: "Ubuntu";
+  font-size: 13px;
+  outline: none;
+}
+
 textarea  
 {  
    font-family:"Ubuntu";
+   tab-size: 2;
    font-size: 13px;
-   height: 150px;
    border: none;
    outline: none;
    resize: none;
    height: 500px;
+   width: 98%
 }

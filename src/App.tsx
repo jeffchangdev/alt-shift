@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { columnData, itemData, futurama, disenchantment } from './data';
 // import { ColumnDiv, ColumnTitle } from './components/styledComponents';
-import { ColumnType, ItemType, StoreType } from './types';
+import { ColumnsType, ItemsType, StoreType } from './types';
 import ItemsColumn from './components/ItemsColumn';
 import TextColumn from './components/TextColumn';
 import Item from './components/Item';
@@ -14,6 +14,7 @@ import Item from './components/Item';
 import createItems from './utils/createItems';
 import createValues from './utils/createValues';
 import { checkIsValidDrop } from './utils/utility';
+import Menu from './components/Menu';
 
 const AppDiv = styled.div``;
 
@@ -30,10 +31,8 @@ function App() {
     col1: { id: 'col1', text: 'futurama', value: futurama },
     col2: { id: 'col2', text: 'disenchantment', value: disenchantment },
   });
-  const [columns, setColumns] = useState<{ [key: string]: ColumnType }>(
-    columnData
-  );
-  const [items, setItems] = useState<{ [key: string]: ItemType }>(itemData);
+  const [columns, setColumns] = useState<ColumnsType>(columnData);
+  const [items, setItems] = useState<ItemsType>(itemData);
   const [draggedId, setDraggedId] = useState<string>('');
   const [mode, setMode] = useState<'text' | 'items'>('text');
 
@@ -66,12 +65,20 @@ function App() {
   }, [mode, store, columns, items]);
 
   if (mode === 'text') {
+    // mutating state directly in updateStore
+    // store value is not used for rendering while mode is text
     const updateStore = (colid: string, value: string) => {
       store[colid].value = value;
     };
     return (
       <AppDiv>
         <ColumnsArea>
+          <Menu
+            store={store}
+            setStore={setStore}
+            columns={columns}
+            setColumns={setColumns}
+          />
           {Object.values(store).map((col) => {
             return (
               <TextColumn
@@ -191,6 +198,12 @@ function App() {
     return (
       <AppDiv>
         <ColumnsArea>
+          <Menu
+            store={store}
+            setStore={setStore}
+            columns={columns}
+            setColumns={setColumns}
+          />
           {Object.values(columns).map(({ id, text, contentids }) => {
             return (
               <ItemsColumn

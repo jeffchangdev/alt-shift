@@ -4,6 +4,10 @@ export interface ColumnType {
   contentids: string[];
 }
 
+export interface ColumnsType {
+  [key: string]: ColumnType;
+}
+
 export interface ItemType {
   id: string;
   parentid: string;
@@ -11,10 +15,14 @@ export interface ItemType {
   contentids: string[];
 }
 
-export type StoreType = {
+export interface ItemsType {
+  [key: string]: ItemType;
+}
+
+export interface StoreType {
   [key: string]: {
     id: string;
     text: string;
     value: string;
   };
-};
+}

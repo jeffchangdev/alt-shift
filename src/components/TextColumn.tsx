@@ -17,18 +17,21 @@ type TextColumnProps = {
 export default function TextColumn({ col, update }: TextColumnProps) {
   const [value, setValue] = useState(col.value);
 
-  /* fail
+  /* FAIL on dismount returns the last textarea value which is one character behind
   useEffect(() => {
     return () => {
       console.log(`dismounted with value ${value}`);
-      update(value);
+      setStore((store) => ({
+        ...store,
+        [col.id]: { id: col.id, text: col.text, value },
+      }));
     };
   }, [value]);
   */
 
   const handleUpdate = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setValue(e.target.value);
-    update(e.target.value);
+    update(e.target.value); // mutating app state here
   };
 
   return (
