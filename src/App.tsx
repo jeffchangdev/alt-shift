@@ -5,12 +5,10 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { columnData, itemData, futurama, disenchantment } from './data';
-// import { ColumnDiv, ColumnTitle } from './components/styledComponents';
 import { ColumnsType, ItemsType, StoreType } from './types';
 import ItemsColumn from './components/ItemsColumn';
 import TextColumn from './components/TextColumn';
 import Item from './components/Item';
-// import TextArea from './components/TextArea';
 import createItems from './utils/createItems';
 import createValues from './utils/createValues';
 import { checkIsValidDrop } from './utils/utility';
@@ -92,6 +90,8 @@ function App() {
       </AppDiv>
     );
   }
+
+  // DRAG AND DROP FUNCTIONS
 
   const handleDragEnd = () => {
     setDraggedId('n/a');
@@ -204,17 +204,17 @@ function App() {
             columns={columns}
             setColumns={setColumns}
           />
-          {Object.values(columns).map(({ id, text, contentids }) => {
+          {Object.values(columns).map((col) => {
             return (
               <ItemsColumn
-                key={id}
-                columnid={id}
-                text={text}
+                key={col.id}
+                columnid={col.id}
+                text={col.text}
                 onDragEnd={handleDragEnd}
                 onDrop={handleColumnDrop}
                 onDragOver={handleDragOver}
               >
-                {contentids.map((itemid) => {
+                {col.contentids.map((itemid) => {
                   return (
                     <Item
                       key={itemid}
@@ -232,10 +232,6 @@ function App() {
               </ItemsColumn>
             );
           })}
-          {/* <ColumnDiv>
-            <ColumnTitle>test column</ColumnTitle>
-            <TextArea columns={columns} items={items} />
-        </ColumnDiv> */}
         </ColumnsArea>
       </AppDiv>
     );
