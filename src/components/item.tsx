@@ -52,6 +52,7 @@ export default function Item({
           onDragEnd={eventHandlers.onDragEnd}
           onDrop={(e) => eventHandlers.onNestedDrop(e, itemid)}
           onDragOver={eventHandlers.onDragOver}
+          style={{ marginTop: '-.5px' }}
         >
           <DropIcon />
         </div>

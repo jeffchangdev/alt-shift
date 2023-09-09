@@ -34,9 +34,11 @@ function App() {
   const [draggedId, setDraggedId] = useState<string>('');
   const [mode, setMode] = useState<'text' | 'items'>('text');
 
+  /*
   window.store = store;
   window.columns = columns;
   window.items = items;
+  */
 
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
@@ -90,9 +92,6 @@ function App() {
       </AppDiv>
     );
   }
-
-  // DRAG AND DROP FUNCTIONS
-
   const handleDragEnd = () => {
     setDraggedId('n/a');
   };
