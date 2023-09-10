@@ -2,20 +2,6 @@
 import styled from 'styled-components';
 import { ColumnDiv, ColumnTitle } from './styledComponents';
 
-/*
-const ColumnDiv = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 200px;
-  border: 1px solid lightgrey;
-  align-items: stretch;
-`;
-
-const ColumnTitle = styled.div`
-  margin-bottom: 8px;
-`;
-*/
-
 const Adjust = styled.div`
   margin-left: 2px;
   margin-top: 2px;

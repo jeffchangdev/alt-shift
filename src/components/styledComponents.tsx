@@ -7,6 +7,7 @@ export const ColumnDiv = styled.div`
   width: 200px;
   border: 1px solid lightgrey;
   align-items: stretch;
+  background-color: #fcfcfc;
 `;
 
 export const ColumnTitle = styled.div`

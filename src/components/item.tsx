@@ -1,10 +1,16 @@
+/* eslint-disable jsx-a11y/mouse-events-have-key-events */
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import styled from 'styled-components';
 import { ItemType } from '../types';
 
-const IconP = styled.p`
+const ItemDiv = styled.div`
+  display: flex;
+  background-color: #fcfcfc;
+`;
+
+const Icon = styled.p`
   display: inline;
   color: gray;
   margin-left: 2px;
@@ -24,7 +30,11 @@ type ItemProps = {
 };
 
 function DropIcon() {
-  return <IconP> &nbsp;:&nbsp; </IconP>;
+  return (
+    <Icon>
+      &nbsp;<b>:</b>&nbsp;
+    </Icon>
+  );
 }
 
 export default function Item({
@@ -38,7 +48,7 @@ export default function Item({
 
   return (
     <>
-      <div style={{ display: 'flex' }}>
+      <ItemDiv>
         <div
           draggable
           onDragEnd={eventHandlers.onDragEnd}
@@ -56,7 +66,7 @@ export default function Item({
         >
           <DropIcon />
         </div>
-      </div>
+      </ItemDiv>
       {contentids.map((itemid: string) => {
         return (
           <Item

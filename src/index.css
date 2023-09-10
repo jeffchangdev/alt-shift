@@ -12,6 +12,7 @@ input {
 textarea  
 {  
    font-family:"Ubuntu";
+   background-color: #FCFCFC;
    tab-size: 2;
    font-size: 13px;
    border: none;
