@@ -6,6 +6,7 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import { ColumnsType, StoreType } from '../types';
+import supabase from '../supabaseClient';
 
 type MenuProps = {
   store: StoreType;
@@ -51,6 +52,11 @@ export default function Menu({
     setText('');
   };
 
+  const handleLogout = async () => {
+    const { error } = await supabase.auth.signOut();
+    console.log(error);
+  };
+
   return (
     <MenuDiv>
       <div> currennt columns: </div>
@@ -65,6 +71,9 @@ export default function Menu({
       />
       <button type="button" onClick={handleClick}>
         + column
+      </button>
+      <button type="button" onClick={handleLogout}>
+        Logout
       </button>
     </MenuDiv>
   );

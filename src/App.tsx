@@ -12,9 +12,14 @@ import Item from './components/Item';
 import createItems from './utils/createItems';
 import createValues from './utils/createValues';
 import { checkIsValidDrop } from './utils/utility';
+import supabase from './supabaseClient';
 import Menu from './components/Menu';
+import Login from './components/Login';
 
-const AppDiv = styled.div``;
+const AppDiv = styled.div`
+  display: flex;
+  justify-content: center;
+`;
 
 const ColumnsArea = styled.div`
   height: 95vh;
@@ -25,6 +30,7 @@ const ColumnsArea = styled.div`
 `;
 
 function App() {
+  const [session, setSession] = useState<any>(null);
   const [store, setStore] = useState<StoreType>({
     col1: { id: 'col1', text: 'futurama', value: futurama },
     col2: { id: 'col2', text: 'disenchantment', value: disenchantment },
@@ -39,6 +45,16 @@ function App() {
   window.columns = columns;
   window.items = items;
   */
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+    });
+
+    supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+  }, []);
 
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
@@ -63,6 +79,14 @@ function App() {
       window.removeEventListener('keydown', handleKeyPress);
     };
   }, [mode, store, columns, items]);
+
+  if (session === null) {
+    return (
+      <AppDiv>
+        <Login />
+      </AppDiv>
+    );
+  }
 
   if (mode === 'text') {
     // mutating state directly in updateStore
