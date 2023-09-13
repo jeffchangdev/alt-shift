@@ -12,7 +12,8 @@ import TextColumn from './components/TextColumn';
 import Item from './components/Item';
 import createItems from './utils/createItems';
 import createValues from './utils/createValues';
-import { checkIsValidDrop, retrieveInitialData } from './utils/utility';
+import { checkIsValidDrop } from './utils/utility';
+import retrieveInitialData from './utils/retrieveInitialData';
 import supabase from './supabaseClient';
 import Login from './components/Login';
 import Nav from './components/Nav';
@@ -40,7 +41,7 @@ function App() {
   const [draggedId, setDraggedId] = useState<string>('');
   const [mode, setMode] = useState<'text' | 'items'>('text');
 
-  window.session = currentSession;
+  // window.session = currentSession;
 
   useEffect(() => {
     console.log('getting session state');

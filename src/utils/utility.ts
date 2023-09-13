@@ -1,6 +1,5 @@
 /* eslint-disable no-plusplus */
 /* eslint-disable no-restricted-syntax */
-import supabase from '../supabaseClient';
 import { ItemType } from '../types';
 
 // ensure that drop id is not child of drag id
@@ -44,24 +43,4 @@ export function createColumn(id: string, text: string, contentids: string[]) {
     text,
     contentids,
   };
-}
-
-export async function retrieveInitialData(setStore, setInitialRetrieve) {
-  interface Row {
-    column_id: string;
-    created_at: string;
-    db_id: number;
-    user_id: string;
-    value: string;
-  }
-  // NEED TO ADD ERROR HANDLING LATER
-  const { data: column } = await supabase.from('column').select('*');
-  const columndata = column as Row[];
-  console.log(column);
-  const newstore: StoreType = {};
-  for (const { db_id, column_id, value } of columndata) {
-    newstore[column_id] = { db_id, id: column_id, text: column_id, value };
-  }
-  setStore(newstore);
-  setInitialRetrieve(true);
 }
