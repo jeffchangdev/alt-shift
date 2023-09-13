@@ -21,3 +21,36 @@ textarea
    height: 500px;
    width: 98%
 }
+
+.sidebar {
+  width: 60px;
+  height: 100vh;
+  background-color: #232323;
+  position: fixed; 
+  top: 0;
+  left: 0;
+  padding-top: 20px;
+  color: #fff;
+}
+
+.sidebar.expanded {
+  width: 160px;
+}
+
+.toggle-button {
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  margin-bottom: 10px;
+}

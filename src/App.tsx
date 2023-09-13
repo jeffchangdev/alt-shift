@@ -13,8 +13,8 @@ import createItems from './utils/createItems';
 import createValues from './utils/createValues';
 import { checkIsValidDrop } from './utils/utility';
 import supabase from './supabaseClient';
-import Menu from './components/Menu';
 import Login from './components/Login';
+import Nav from './components/Nav';
 
 const AppDiv = styled.div`
   display: flex;
@@ -32,8 +32,12 @@ const ColumnsArea = styled.div`
 function App() {
   const [session, setSession] = useState<any>(null);
   const [store, setStore] = useState<StoreType>({
-    col1: { id: 'col1', text: 'futurama', value: futurama },
-    col2: { id: 'col2', text: 'disenchantment', value: disenchantment },
+    futurama: { id: 'futurama', text: 'futurama', value: futurama },
+    disenchantment: {
+      id: 'disenchantment',
+      text: 'disenchantment',
+      value: disenchantment,
+    },
   });
   const [columns, setColumns] = useState<ColumnsType>(columnData);
   const [items, setItems] = useState<ItemsType>(itemData);
@@ -96,13 +100,13 @@ function App() {
     };
     return (
       <AppDiv>
+        <Nav
+          store={store}
+          setStore={setStore}
+          columns={columns}
+          setColumns={setColumns}
+        />
         <ColumnsArea>
-          <Menu
-            store={store}
-            setStore={setStore}
-            columns={columns}
-            setColumns={setColumns}
-          />
           {Object.values(store).map((col) => {
             return (
               <TextColumn
@@ -220,13 +224,13 @@ function App() {
   if (mode === 'items') {
     return (
       <AppDiv>
+        <Nav
+          store={store}
+          setStore={setStore}
+          columns={columns}
+          setColumns={setColumns}
+        />
         <ColumnsArea>
-          <Menu
-            store={store}
-            setStore={setStore}
-            columns={columns}
-            setColumns={setColumns}
-          />
           {Object.values(columns).map((col) => {
             return (
               <ItemsColumn
