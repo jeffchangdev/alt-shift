@@ -6,6 +6,8 @@ import {
 import supabase from '../supabaseClient';
 
 export default function Login() {
+  // eslint-disable-next-line no-console
+  console.log('login component rendered');
   return (
     <div style={{ width: '300px' }}>
       <Auth

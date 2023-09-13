@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable guard-for-in */
+/* eslint-disable no-restricted-syntax */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable no-console */
@@ -12,9 +16,10 @@ type NavProps = {
   setStore: any;
   columns: ColumnsType;
   setColumns: any;
+  userid: any;
 };
 
-function Columns({ store, setStore, columns, setColumns }: NavProps) {
+function Columns({ store, setStore, columns, setColumns, userid }: NavProps) {
   const [isEditable, setIsEditable] = useState(false);
   const [text, setText] = useState<string>('');
 
@@ -28,11 +33,16 @@ function Columns({ store, setStore, columns, setColumns }: NavProps) {
     setText(e.target.value);
   };
 
-  const handleAddClick = () => {
+  const handleAddClick = async () => {
     if (text === '') return;
     if (store[text] !== undefined) return;
+    const testvalue =
+      'dreamland\n  bean\n    elfo\n    luci\n  king zog\n  king oona';
+    await supabase
+      .from('column')
+      .insert([{ user_id: userid, column_id: text, value: testvalue }]);
     setStore({ ...store, [text]: { id: text, text, value: '' } });
-    setColumns({...columns, [text]: { id: text, text, contentids: [] } });
+    setColumns({ ...columns, [text]: { id: text, text, contentids: [] } });
     setText('');
   };
 
@@ -92,6 +102,7 @@ export default function Nav({
   setStore,
   columns,
   setColumns,
+  userid,
 }: NavProps) {
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -103,6 +114,17 @@ export default function Nav({
     const { error } = await supabase.auth.signOut();
     console.log(error);
   };
+
+  /*
+  const upsertData = async () => {
+    const updates = [];
+    for (const key in store) {
+      const { db_id, id, value } = store[key];
+      update.push({ db_id, column_id: id, value });
+    }
+    await supabase.from('column').upsert(updates);
+  };
+  */
 
   return (
     <NavDiv className={`sidebar ${isExpanded ? 'expanded' : ''}`}>
@@ -122,6 +144,7 @@ export default function Nav({
             setStore={setStore}
             columns={columns}
             setColumns={setColumns}
+            userid={userid}
           />
         )}
       </div>

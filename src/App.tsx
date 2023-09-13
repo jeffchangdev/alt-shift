@@ -1,17 +1,18 @@
+/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable no-restricted-syntax */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable no-console */
 /* eslint-disable no-useless-return */
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { columnData, itemData, futurama, disenchantment } from './data';
 import { ColumnsType, ItemsType, StoreType } from './types';
 import ItemsColumn from './components/ItemsColumn';
 import TextColumn from './components/TextColumn';
 import Item from './components/Item';
 import createItems from './utils/createItems';
 import createValues from './utils/createValues';
-import { checkIsValidDrop } from './utils/utility';
+import { checkIsValidDrop, retrieveInitialData } from './utils/utility';
 import supabase from './supabaseClient';
 import Login from './components/Login';
 import Nav from './components/Nav';
@@ -30,34 +31,27 @@ const ColumnsArea = styled.div`
 `;
 
 function App() {
-  const [session, setSession] = useState<any>(null);
-  const [store, setStore] = useState<StoreType>({
-    futurama: { id: 'futurama', text: 'futurama', value: futurama },
-    disenchantment: {
-      id: 'disenchantment',
-      text: 'disenchantment',
-      value: disenchantment,
-    },
-  });
-  const [columns, setColumns] = useState<ColumnsType>(columnData);
-  const [items, setItems] = useState<ItemsType>(itemData);
+  const [currentSession, setCurrentSession] = useState<any>();
+  const [loaded, setLoaded] = useState<boolean>(false);
+  const [initalRetrieve, setInitalRetrieve] = useState<boolean>(false);
+  const [store, setStore] = useState<StoreType>({});
+  const [columns, setColumns] = useState<ColumnsType>({});
+  const [items, setItems] = useState<ItemsType>({});
   const [draggedId, setDraggedId] = useState<string>('');
   const [mode, setMode] = useState<'text' | 'items'>('text');
 
-  /*
-  window.store = store;
-  window.columns = columns;
-  window.items = items;
-  */
+  window.session = currentSession;
 
   useEffect(() => {
+    console.log('getting session state');
     supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
+      setCurrentSession(session);
+      setLoaded(true);
     });
-
     supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-    });
+      console.log('session state changed');
+      if (currentSession !== session) setCurrentSession(session);
+    }); // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -65,16 +59,18 @@ function App() {
       if (e.altKey && e.shiftKey) {
         console.log('alt+shift!');
         console.log(store);
-        if (mode === 'text') {
-          const { appcolumns, appitems } = createItems(store);
-          setColumns(appcolumns);
-          setItems(appitems);
-          setMode('items');
-        } else {
-          // mode ==="items"
-          const newstore = createValues(columns, items);
-          setStore(newstore);
-          setMode('text');
+        if (currentSession) {
+          if (mode === 'text') {
+            const { appcolumns, appitems } = createItems(store);
+            setColumns(appcolumns);
+            setItems(appitems);
+            setMode('items');
+          } else {
+            // mode ==="items"
+            const newstore = createValues(columns, items);
+            setStore(newstore);
+            setMode('text');
+          }
         }
       }
     };
@@ -82,9 +78,12 @@ function App() {
     return () => {
       window.removeEventListener('keydown', handleKeyPress);
     };
-  }, [mode, store, columns, items]);
+  }, [currentSession, mode, store, columns, items]);
 
-  if (session === null) {
+  if (loaded === false) {
+    return <div> </div>;
+  }
+  if (loaded && !currentSession) {
     return (
       <AppDiv>
         <Login />
@@ -92,7 +91,11 @@ function App() {
     );
   }
 
-  if (mode === 'text') {
+  if (initalRetrieve === false) {
+    retrieveInitialData(setStore, setInitalRetrieve);
+  }
+
+  if (initalRetrieve && mode === 'text') {
     // mutating state directly in updateStore
     // store value is not used for rendering while mode is text
     const updateStore = (colid: string, value: string) => {
@@ -105,6 +108,7 @@ function App() {
           setStore={setStore}
           columns={columns}
           setColumns={setColumns}
+          userid={currentSession.user.id}
         />
         <ColumnsArea>
           {Object.values(store).map((col) => {
@@ -201,6 +205,7 @@ function App() {
     e: React.DragEvent<HTMLDivElement>,
     droppedId: string
   ) => {
+    if (!columns || !items) return;
     e.preventDefault();
     console.log(`item dropped on was ${columns[droppedId].text}`);
     const oldParentId = items[draggedId].parentid;
@@ -221,7 +226,7 @@ function App() {
     setItems({ ...items });
   };
 
-  if (mode === 'items') {
+  if (initalRetrieve && mode === 'items') {
     return (
       <AppDiv>
         <Nav
@@ -229,6 +234,7 @@ function App() {
           setStore={setStore}
           columns={columns}
           setColumns={setColumns}
+          userid={currentSession.user.id}
         />
         <ColumnsArea>
           {Object.values(columns).map((col) => {

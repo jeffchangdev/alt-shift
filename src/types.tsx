@@ -21,6 +21,7 @@ export interface ItemsType {
 
 export interface StoreType {
   [key: string]: {
+    db_id: number;
     id: string;
     text: string;
     value: string;
