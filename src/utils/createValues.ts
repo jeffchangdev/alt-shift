@@ -27,6 +27,7 @@ export default function createValues(
   const newstore: StoreType = {};
   for (const column of Object.values(columns)) {
     newstore[column.id] = {
+      db_id: column.db_id,
       id: column.id,
       text: column.text,
       value: generateText(column, items),

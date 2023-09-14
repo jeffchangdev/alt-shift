@@ -13,9 +13,9 @@ import Item from './components/Item';
 import createItems from './utils/createItems';
 import createValues from './utils/createValues';
 import { checkIsValidDrop } from './utils/utility';
-import retrieveInitialData from './utils/retrieveInitialData';
+import retrieveInitialData from './api/retrieveInitialData';
 import supabase from './supabaseClient';
-import Login from './components/Login';
+import SupabaseLogin from './components/SupabaseLogin';
 import Nav from './components/Nav';
 
 const AppDiv = styled.div`
@@ -42,16 +42,23 @@ function App() {
   const [mode, setMode] = useState<'text' | 'items'>('text');
 
   // window.session = currentSession;
+  window.store = store;
+  window.columns = columns;
+  window.items = items;
 
   useEffect(() => {
-    console.log('getting session state');
+    // console.log('getting session state');
+    /*
     supabase.auth.getSession().then(({ data: { session } }) => {
-      setCurrentSession(session);
+      //setCurrentSession(session);
       setLoaded(true);
     });
+    */
     supabase.auth.onAuthStateChange((_event, session) => {
       console.log('session state changed');
+      console.log(session);
       if (currentSession !== session) setCurrentSession(session);
+      setLoaded(true);
     }); // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -87,7 +94,7 @@ function App() {
   if (loaded && !currentSession) {
     return (
       <AppDiv>
-        <Login />
+        <SupabaseLogin />
       </AppDiv>
     );
   }

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable no-continue */
@@ -55,9 +56,9 @@ export default function createItems(store: StoreType) {
   const appitems: { [key: string]: ItemType } = {};
   const counter = { current: 0 };
 
-  for (const { id, text, value } of Object.values(store)) {
+  for (const { db_id, id, text, value } of Object.values(store)) {
     const { items, contentids } = createColumnState(id, value, counter);
-    appcolumns[id] = createColumn(id, text, contentids);
+    appcolumns[id] = createColumn(db_id, id, text, contentids);
     Object.assign(appitems, items);
   }
 

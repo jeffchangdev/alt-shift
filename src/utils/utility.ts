@@ -37,10 +37,30 @@ export function createItem(id: string, text: string) {
   };
 }
 
-export function createColumn(id: string, text: string, contentids: string[]) {
+export function createColumn(
+  db_id: number,
+  id: string,
+  text: string,
+  contentids: string[]
+) {
   return {
+    db_id,
     id,
     text,
     contentids,
+  };
+}
+
+export function createStoreObj(
+  db_id: number,
+  id: string,
+  text: string,
+  value: string
+) {
+  return {
+    db_id,
+    id,
+    text,
+    value,
   };
 }

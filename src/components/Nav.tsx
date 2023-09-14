@@ -10,6 +10,7 @@ import styled from 'styled-components';
 import { RiLogoutBoxLine, RiMenuLine } from 'react-icons/ri';
 import supabase from '../supabaseClient';
 import { StoreType, ColumnsType } from '../types';
+import { createColumn, createStoreObj } from '../utils/utility';
 
 type NavProps = {
   store: StoreType;
@@ -36,13 +37,25 @@ function Columns({ store, setStore, columns, setColumns, userid }: NavProps) {
   const handleAddClick = async () => {
     if (text === '') return;
     if (store[text] !== undefined) return;
-    const testvalue =
-      'dreamland\n  bean\n    elfo\n    luci\n  king zog\n  king oona';
-    await supabase
+
+    const { data, error } = await supabase
       .from('column')
-      .insert([{ user_id: userid, column_id: text, value: testvalue }]);
-    setStore({ ...store, [text]: { id: text, text, value: '' } });
-    setColumns({ ...columns, [text]: { id: text, text, contentids: [] } });
+      .insert([{ user_id: userid, column_id: text, value: '' }])
+      .select();
+
+    if (error) {
+      console.log('database failed to add column');
+      return;
+    }
+
+    setStore({
+      ...store,
+      [text]: createStoreObj(data[0].db_id, text, text, ''),
+    });
+    setColumns({
+      ...columns,
+      [text]: createColumn(data[0].db_id, text, text, []),
+    });
     setText('');
   };
 
