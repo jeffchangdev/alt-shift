@@ -29,7 +29,7 @@ export default function createValues(
     newstore[column.id] = {
       db_id: column.db_id,
       id: column.id,
-      text: column.text,
+      text: column.id,
       value: generateText(column, items),
     };
   }

@@ -17,6 +17,7 @@ import retrieveInitialData from './api/retrieveInitialData';
 import supabase from './supabaseClient';
 import SupabaseLogin from './components/SupabaseLogin';
 import Nav from './components/Nav';
+import saveData from './api/saveData';
 
 const AppDiv = styled.div`
   display: flex;
@@ -41,10 +42,12 @@ function App() {
   const [draggedId, setDraggedId] = useState<string>('');
   const [mode, setMode] = useState<'text' | 'items'>('text');
 
+  console.log('app refreshed!');
   // window.session = currentSession;
   window.store = store;
   window.columns = columns;
   window.items = items;
+  window.mode = mode;
 
   useEffect(() => {
     // console.log('getting session state');
@@ -99,6 +102,11 @@ function App() {
     );
   }
 
+  const callSaveData = () => {
+    console.log('callSaveData invoked');
+    saveData(mode, store, columns, items, currentSession.user.id);
+  };
+
   if (initalRetrieve === false) {
     retrieveInitialData(setStore, setInitalRetrieve);
   }
@@ -116,7 +124,10 @@ function App() {
           setStore={setStore}
           columns={columns}
           setColumns={setColumns}
+          items={items}
           userid={currentSession.user.id}
+          mode={mode}
+          callSaveData={callSaveData}
         />
         <ColumnsArea>
           {Object.values(store).map((col) => {
@@ -242,7 +253,10 @@ function App() {
           setStore={setStore}
           columns={columns}
           setColumns={setColumns}
+          items={items}
           userid={currentSession.user.id}
+          mode={mode}
+          callSaveData={callSaveData}
         />
         <ColumnsArea>
           {Object.values(columns).map((col) => {

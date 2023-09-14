@@ -7,17 +7,21 @@
 /* eslint-disable no-console */
 import { useState } from 'react';
 import styled from 'styled-components';
-import { RiLogoutBoxLine, RiMenuLine } from 'react-icons/ri';
+import { RiLogoutBoxLine, RiMenuLine, RiSave2Line } from 'react-icons/ri';
 import supabase from '../supabaseClient';
-import { StoreType, ColumnsType } from '../types';
+import { StoreType, ColumnsType, ItemsType } from '../types';
 import { createColumn, createStoreObj } from '../utils/utility';
+import saveData from '../api/saveData';
 
 type NavProps = {
+  mode: string;
   store: StoreType;
   setStore: any;
   columns: ColumnsType;
   setColumns: any;
+  items: ItemsType;
   userid: any;
+  callSaveData: any;
 };
 
 function Columns({ store, setStore, columns, setColumns, userid }: NavProps) {
@@ -115,9 +119,15 @@ export default function Nav({
   setStore,
   columns,
   setColumns,
+  items,
   userid,
+  mode,
+  callSaveData,
 }: NavProps) {
   const [isExpanded, setIsExpanded] = useState(false);
+
+  console.log('nav refreshed!');
+  console.log(items);
 
   const toggleSidebar = () => {
     setIsExpanded(!isExpanded);
@@ -128,28 +138,28 @@ export default function Nav({
     console.log(error);
   };
 
-  /*
-  const upsertData = async () => {
-    const updates = [];
-    for (const key in store) {
-      const { db_id, id, value } = store[key];
-      update.push({ db_id, column_id: id, value });
-    }
-    await supabase.from('column').upsert(updates);
-  };
-  */
-
   return (
     <NavDiv className={`sidebar ${isExpanded ? 'expanded' : ''}`}>
       <div>
         <div
           style={{
-            fontSize: '30px',
+            fontSize: '25px',
             display: 'flex',
             justifyContent: 'center',
           }}
         >
-          <RiMenuLine onClick={toggleSidebar} className="toggle-button" />
+          <RiMenuLine onClick={toggleSidebar} />
+        </div>
+        <div
+          style={{
+            fontSize: '25px',
+            display: 'flex',
+            justifyContent: 'center',
+          }}
+        >
+          <RiSave2Line
+            onClick={() => saveData(mode, store, columns, items, userid)}
+          />
         </div>
         {isExpanded && (
           <Columns
@@ -164,7 +174,7 @@ export default function Nav({
       <div
         style={{
           marginBottom: '30px',
-          fontSize: '20px',
+          fontSize: '25px',
           display: 'flex',
           justifyContent: 'center',
         }}
