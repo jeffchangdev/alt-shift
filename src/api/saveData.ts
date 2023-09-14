@@ -14,7 +14,7 @@ export default async function saveData(
 ) {
   const records = [];
   const currentStore = mode === 'text' ? store : createValues(columns, items);
-  console.log(currentStore)
+  console.log(currentStore);
   const columnObjects = Object.values(currentStore);
 
   for (const { db_id, id, value } of columnObjects) {
