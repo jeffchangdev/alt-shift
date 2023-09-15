@@ -7,11 +7,16 @@
 /* eslint-disable no-console */
 import { useState } from 'react';
 import styled from 'styled-components';
-import { RiLogoutBoxLine, RiMenuLine, RiSave2Line } from 'react-icons/ri';
+import {
+  RiLogoutBoxLine,
+  RiMenuLine,
+  RiMenuFoldLine,
+  RiSave2Line,
+} from 'react-icons/ri';
 import supabase from '../supabaseClient';
 import { StoreType, ColumnsType, ItemsType } from '../types';
-import { createColumn, createStoreObj } from '../utils/utility';
 import saveData from '../api/saveData';
+import ColumnsDisplay from './ColumnsDisplay';
 
 type NavProps = {
   mode: string;
@@ -21,97 +26,18 @@ type NavProps = {
   setColumns: any;
   items: ItemsType;
   userid: any;
-  callSaveData: any;
 };
-
-function Columns({ store, setStore, columns, setColumns, userid }: NavProps) {
-  const [isEditable, setIsEditable] = useState(false);
-  const [text, setText] = useState<string>('');
-
-  const cols = Object.values(store);
-
-  const handleEditClick = () => {
-    setIsEditable(!isEditable);
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setText(e.target.value);
-  };
-
-  const handleAddClick = async () => {
-    if (text === '') return;
-    if (store[text] !== undefined) return;
-
-    const { data, error } = await supabase
-      .from('column')
-      .insert([{ user_id: userid, column_id: text, value: '' }])
-      .select();
-
-    if (error) {
-      console.log('database failed to add column');
-      return;
-    }
-
-    setStore({
-      ...store,
-      [text]: createStoreObj(data[0].db_id, text, text, ''),
-    });
-    setColumns({
-      ...columns,
-      [text]: createColumn(data[0].db_id, text, text, []),
-    });
-    setText('');
-  };
-
-  const handleDelete = (id: string) => {
-    const newstore = { ...store };
-    const newcolumns = { ...columns };
-    delete newstore[id];
-    delete newcolumns[id];
-    setStore(newstore);
-    setColumns(newcolumns);
-  };
-
-  return (
-    <div>
-      <input
-        type="text"
-        placeholder="new column name..."
-        value={text}
-        onChange={handleChange}
-        style={{ width: '90%' }}
-      />
-      <button type="button" onClick={handleAddClick}>
-        + column
-      </button>
-      <div>
-        {cols.map((col) => {
-          return (
-            <div key={col.id} style={{ display: 'flex' }}>
-              <div> {col.text} </div>
-              {isEditable && (
-                <div
-                  onClick={() => handleDelete(col.id)}
-                  style={{ marginLeft: '6px', cursor: 'pointer' }}
-                >
-                  x
-                </div>
-              )}
-            </div>
-          );
-        })}
-      </div>
-      <button type="button" onClick={handleEditClick}>
-        edit
-      </button>
-    </div>
-  );
-}
 
 const NavDiv = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+`;
+
+const IconDiv = styled.div`
+  font-size: 25px;
+  display: flex;
+  justify-content: center;
 `;
 
 export default function Nav({
@@ -122,7 +48,6 @@ export default function Nav({
   items,
   userid,
   mode,
-  callSaveData,
 }: NavProps) {
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -141,28 +66,20 @@ export default function Nav({
   return (
     <NavDiv className={`sidebar ${isExpanded ? 'expanded' : ''}`}>
       <div>
-        <div
-          style={{
-            fontSize: '25px',
-            display: 'flex',
-            justifyContent: 'center',
-          }}
-        >
-          <RiMenuLine onClick={toggleSidebar} />
-        </div>
-        <div
-          style={{
-            fontSize: '25px',
-            display: 'flex',
-            justifyContent: 'center',
-          }}
-        >
+        <IconDiv>
+          {isExpanded ? (
+            <RiMenuFoldLine onClick={toggleSidebar} />
+          ) : (
+            <RiMenuLine onClick={toggleSidebar} />
+          )}
+        </IconDiv>
+        <IconDiv>
           <RiSave2Line
             onClick={() => saveData(mode, store, columns, items, userid)}
           />
-        </div>
+        </IconDiv>
         {isExpanded && (
-          <Columns
+          <ColumnsDisplay
             store={store}
             setStore={setStore}
             columns={columns}

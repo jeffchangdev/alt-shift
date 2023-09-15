@@ -18,6 +18,7 @@ import supabase from './supabaseClient';
 import SupabaseLogin from './components/SupabaseLogin';
 import Nav from './components/Nav';
 import saveData from './api/saveData';
+import Notification from './components/Notification';
 
 const AppDiv = styled.div`
   display: flex;
@@ -41,6 +42,7 @@ function App() {
   const [items, setItems] = useState<ItemsType>({});
   const [draggedId, setDraggedId] = useState<string>('');
   const [mode, setMode] = useState<'text' | 'items'>('text');
+  const [showNotification, setShowNotification] = useState(false);
 
   console.log('app refreshed!');
   // window.session = currentSession;
@@ -50,7 +52,6 @@ function App() {
   window.mode = mode;
 
   useEffect(() => {
-    // console.log('getting session state');
     /*
     supabase.auth.getSession().then(({ data: { session } }) => {
       //setCurrentSession(session);
@@ -102,6 +103,15 @@ function App() {
     );
   }
 
+  const handleShowNotification = () => {
+    setShowNotification(true);
+
+    // Hide the notification after a delay (e.g., 5 seconds)
+    setTimeout(() => {
+      setShowNotification(false);
+    }, 2000);
+  };
+
   const callSaveData = () => {
     console.log('callSaveData invoked');
     saveData(mode, store, columns, items, currentSession.user.id);
@@ -127,7 +137,6 @@ function App() {
           items={items}
           userid={currentSession.user.id}
           mode={mode}
-          callSaveData={callSaveData}
         />
         <ColumnsArea>
           {Object.values(store).map((col) => {
@@ -140,6 +149,15 @@ function App() {
             );
           })}
         </ColumnsArea>
+        <button type="button" onClick={handleShowNotification}>
+          notify
+        </button>
+        {showNotification && (
+          <Notification
+            showNotification={showNotification}
+            message="notification!"
+          />
+        )}
       </AppDiv>
     );
   }
