@@ -4,7 +4,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import { useState } from 'react';
 import supabase from '../supabaseClient';
-import { StoreType, ColumnsType } from '../types';
+import { StoreType, ColumnsType, DisplayedColumns } from '../types';
 import { createColumn, createStoreObj } from '../utils/utility';
 
 type ColumnsDisplayProps = {
@@ -12,20 +12,22 @@ type ColumnsDisplayProps = {
   setStore: any;
   columns: ColumnsType;
   setColumns: any;
+  display: DisplayedColumns;
+  setDisplay: any;
   userid: string;
 };
 
-export default function ColumnsDisplay({
+export default function ColumnList({
   store,
   setStore,
   columns,
   setColumns,
+  display,
+  setDisplay,
   userid,
 }: ColumnsDisplayProps) {
   const [isEditable, setIsEditable] = useState(false);
   const [text, setText] = useState<string>('');
-
-  const cols = Object.values(store);
 
   const handleEdit = () => {
     setIsEditable(!isEditable);
@@ -77,6 +79,12 @@ export default function ColumnsDisplay({
     setColumns(newcolumns);
   };
 
+  const handleShow = (colid: string) => {
+    const updatedDisplay = { ...display };
+    updatedDisplay[colid].displayed = true;
+    setDisplay(updatedDisplay);
+  };
+
   return (
     <div>
       <input
@@ -90,10 +98,10 @@ export default function ColumnsDisplay({
         + column
       </button>
       <div>
-        {cols.map((col) => {
+        {Object.values(store).map((col) => {
           return (
             <div key={col.id} style={{ display: 'flex' }}>
-              <div> {col.text} </div>
+              <div onClick={() => handleShow(col.id)}>{col.text}</div>
               {isEditable && (
                 <div
                   onClick={() => handleDelete(col.id, col.db_id)}

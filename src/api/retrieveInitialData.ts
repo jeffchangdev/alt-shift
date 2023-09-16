@@ -2,10 +2,11 @@
 /* eslint-disable no-console */
 /* eslint-disable no-restricted-syntax */
 import supabase from '../supabaseClient';
-import { StoreType } from '../types';
+import { StoreType, DisplayedColumns } from '../types';
 
 export default async function retrieveInitialData(
   setStore: React.Dispatch<React.SetStateAction<StoreType>>,
+  setDisplayedColumns: React.Dispatch<React.SetStateAction<DisplayedColumns>>,
   setInitialRetrieve: React.Dispatch<React.SetStateAction<boolean>>
 ) {
   interface Row {
@@ -19,10 +20,15 @@ export default async function retrieveInitialData(
   const { data: column } = await supabase.from('column').select('*');
   const columndata = column as Row[];
   console.log(column);
-  const newstore: StoreType = {};
+
+  const store: StoreType = {};
+  const displayedColumns: DisplayedColumns = {};
+
   for (const { db_id, column_id, value } of columndata) {
-    newstore[column_id] = { db_id, id: column_id, text: column_id, value };
+    store[column_id] = { db_id, id: column_id, text: column_id, value };
+    displayedColumns[column_id] = { displayed: true };
   }
-  setStore(newstore);
+  setStore(store);
+  setDisplayedColumns(displayedColumns);
   setInitialRetrieve(true);
 }

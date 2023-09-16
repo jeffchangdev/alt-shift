@@ -1,10 +1,18 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import styled from 'styled-components';
 import { useState } from 'react';
 import { ColumnDiv, ColumnTitle } from './styledComponents';
+
+const FlexTitleDiv = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
 
 type TextColumnProps = {
   col: {
@@ -12,10 +20,24 @@ type TextColumnProps = {
     value: string;
   };
   update: any;
+  display: any;
+  setDisplay: any;
 };
 
-export default function TextColumn({ col, update }: TextColumnProps) {
+export default function TextColumn({
+  col,
+  update,
+  display,
+  setDisplay,
+}: TextColumnProps) {
   const [value, setValue] = useState(col.value);
+  const displayValue = display[col.text].displayed ? 'inherit' : 'none';
+
+  const handleClick = () => {
+    const updatedDisplay = { ...display };
+    updatedDisplay[col.text].displayed = false;
+    setDisplay(updatedDisplay);
+  };
 
   /* FAIL on dismount returns the last textarea value which is one character behind
   useEffect(() => {
@@ -35,8 +57,14 @@ export default function TextColumn({ col, update }: TextColumnProps) {
   };
 
   return (
-    <ColumnDiv>
-      <ColumnTitle>{col.text}</ColumnTitle>
+    <ColumnDiv display={displayValue}>
+      <FlexTitleDiv>
+        <ColumnTitle>{col.text}</ColumnTitle>
+        <div style={{ marginRight: '4px' }} onClick={handleClick}>
+          HIDE
+        </div>
+      </FlexTitleDiv>
+
       <textarea value={value} onChange={handleUpdate} spellCheck="false" />
     </ColumnDiv>
   );

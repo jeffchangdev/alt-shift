@@ -14,9 +14,9 @@ import {
   RiSave2Line,
 } from 'react-icons/ri';
 import supabase from '../supabaseClient';
-import { StoreType, ColumnsType, ItemsType } from '../types';
+import { StoreType, ColumnsType, ItemsType, DisplayedColumns } from '../types';
 import saveData from '../api/saveData';
-import ColumnsDisplay from './ColumnsDisplay';
+import ColumnList from './ColumnList';
 
 type NavProps = {
   mode: string;
@@ -24,6 +24,8 @@ type NavProps = {
   setStore: any;
   columns: ColumnsType;
   setColumns: any;
+  display: DisplayedColumns;
+  setDisplay: any;
   items: ItemsType;
   userid: any;
 };
@@ -45,6 +47,8 @@ export default function Nav({
   setStore,
   columns,
   setColumns,
+  display,
+  setDisplay,
   items,
   userid,
   mode,
@@ -79,12 +83,14 @@ export default function Nav({
           />
         </IconDiv>
         {isExpanded && (
-          <ColumnsDisplay
+          <ColumnList
             store={store}
             setStore={setStore}
             columns={columns}
             setColumns={setColumns}
             userid={userid}
+            display={display}
+            setDisplay={setDisplay}
           />
         )}
       </div>

@@ -6,7 +6,7 @@
 /* eslint-disable no-useless-return */
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { ColumnsType, ItemsType, StoreType } from './types';
+import { ColumnsType, ItemsType, StoreType, DisplayedColumns } from './types';
 import ItemsColumn from './components/ItemsColumn';
 import TextColumn from './components/TextColumn';
 import Item from './components/Item';
@@ -17,8 +17,8 @@ import retrieveInitialData from './api/retrieveInitialData';
 import supabase from './supabaseClient';
 import SupabaseLogin from './components/SupabaseLogin';
 import Nav from './components/Nav';
-import saveData from './api/saveData';
 import Notification from './components/Notification';
+import Route from './components/Route';
 
 const AppDiv = styled.div`
   display: flex;
@@ -43,6 +43,8 @@ function App() {
   const [draggedId, setDraggedId] = useState<string>('');
   const [mode, setMode] = useState<'text' | 'items'>('text');
   const [showNotification, setShowNotification] = useState(false);
+  // eslint-disable-next-line prettier/prettier
+  const [displayedColumns, setDisplayedColumns] = useState<DisplayedColumns>({});
 
   console.log('app refreshed!');
   // window.session = currentSession;
@@ -50,6 +52,7 @@ function App() {
   window.columns = columns;
   window.items = items;
   window.mode = mode;
+  window.displayedColumns = displayedColumns;
 
   useEffect(() => {
     /*
@@ -92,6 +95,14 @@ function App() {
     };
   }, [currentSession, mode, store, columns, items]);
 
+  const handleShowNotification = () => {
+    setShowNotification(true);
+
+    setTimeout(() => {
+      setShowNotification(false);
+    }, 2000);
+  };
+
   if (loaded === false) {
     return <div> </div>;
   }
@@ -103,64 +114,16 @@ function App() {
     );
   }
 
-  const handleShowNotification = () => {
-    setShowNotification(true);
-
-    // Hide the notification after a delay (e.g., 5 seconds)
-    setTimeout(() => {
-      setShowNotification(false);
-    }, 2000);
-  };
-
-  const callSaveData = () => {
-    console.log('callSaveData invoked');
-    saveData(mode, store, columns, items, currentSession.user.id);
-  };
-
   if (initalRetrieve === false) {
-    retrieveInitialData(setStore, setInitalRetrieve);
+    retrieveInitialData(setStore, setDisplayedColumns, setInitalRetrieve);
   }
 
-  if (initalRetrieve && mode === 'text') {
-    // mutating state directly in updateStore
-    // store value is not used for rendering while mode is text
-    const updateStore = (colid: string, value: string) => {
-      store[colid].value = value;
-    };
-    return (
-      <AppDiv>
-        <Nav
-          store={store}
-          setStore={setStore}
-          columns={columns}
-          setColumns={setColumns}
-          items={items}
-          userid={currentSession.user.id}
-          mode={mode}
-        />
-        <ColumnsArea>
-          {Object.values(store).map((col) => {
-            return (
-              <TextColumn
-                key={col.id}
-                col={col}
-                update={(value: string) => updateStore(col.id, value)}
-              />
-            );
-          })}
-        </ColumnsArea>
-        <button type="button" onClick={handleShowNotification}>
-          notify
-        </button>
-        {showNotification && (
-          <Notification
-            showNotification={showNotification}
-            message="notification!"
-          />
-        )}
-      </AppDiv>
-    );
-  }
+  // mutating state directly in updateStore
+  // store value is not used for rendering while mode is text
+  const updateStore = (colid: string, value: string) => {
+    store[colid].value = value;
+  };
+
   const handleDragEnd = () => {
     setDraggedId('n/a');
   };
@@ -263,7 +226,7 @@ function App() {
     setItems({ ...items });
   };
 
-  if (initalRetrieve && mode === 'items') {
+  if (initalRetrieve) {
     return (
       <AppDiv>
         <Nav
@@ -271,41 +234,64 @@ function App() {
           setStore={setStore}
           columns={columns}
           setColumns={setColumns}
+          display={displayedColumns}
+          setDisplay={setDisplayedColumns}
           items={items}
           userid={currentSession.user.id}
           mode={mode}
-          callSaveData={callSaveData}
         />
-        <ColumnsArea>
-          {Object.values(columns).map((col) => {
-            return (
-              <ItemsColumn
-                key={col.id}
-                columnid={col.id}
-                text={col.text}
-                onDragEnd={handleDragEnd}
-                onDrop={handleColumnDrop}
-                onDragOver={handleDragOver}
-              >
-                {col.contentids.map((itemid) => {
-                  return (
-                    <Item
-                      key={itemid}
-                      itemid={itemid}
-                      items={items}
-                      level={0}
-                      onDragEnd={handleDragEnd}
-                      onDragStart={handleDragStart}
-                      onDrop={handleDrop}
-                      onNestedDrop={handleNestedDrop}
-                      onDragOver={handleDragOver}
-                    />
-                  );
-                })}
-              </ItemsColumn>
-            );
-          })}
-        </ColumnsArea>
+        {mode === 'text' && (
+          <>
+            <ColumnsArea>
+              {Object.values(store).map((col) => {
+                return (
+                  <TextColumn
+                    key={col.id}
+                    col={col}
+                    update={(value: string) => updateStore(col.id, value)}
+                    display={displayedColumns}
+                    setDisplay={setDisplayedColumns}
+                  />
+                );
+              })}
+            </ColumnsArea>
+            <Route />
+          </>
+        )}
+        {mode === 'items' && (
+          <ColumnsArea>
+            {Object.values(columns).map((col) => {
+              return (
+                <ItemsColumn
+                  key={col.id}
+                  columnid={col.id}
+                  text={col.text}
+                  display={displayedColumns}
+                  setDisplay={setDisplayedColumns}
+                  onDragEnd={handleDragEnd}
+                  onDrop={handleColumnDrop}
+                  onDragOver={handleDragOver}
+                >
+                  {col.contentids.map((itemid) => {
+                    return (
+                      <Item
+                        key={itemid}
+                        itemid={itemid}
+                        items={items}
+                        level={0}
+                        onDragEnd={handleDragEnd}
+                        onDragStart={handleDragStart}
+                        onDrop={handleDrop}
+                        onNestedDrop={handleNestedDrop}
+                        onDragOver={handleDragOver}
+                      />
+                    );
+                  })}
+                </ItemsColumn>
+              );
+            })}
+          </ColumnsArea>
+        )}
       </AppDiv>
     );
   }

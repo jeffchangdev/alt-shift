@@ -1,4 +1,5 @@
 export interface ColumnType {
+  db_id: number;
   id: string;
   text: string;
   contentids: string[];
@@ -25,5 +26,11 @@ export interface StoreType {
     id: string;
     text: string;
     value: string;
+  };
+}
+
+export interface DisplayedColumns {
+  [key: string]: {
+    displayed: boolean;
   };
 }

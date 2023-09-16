@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable no-restricted-syntax */
@@ -22,6 +23,8 @@ export default async function saveData(
   }
 
   console.log(records);
+  // start rendering notification component
+  // loading...
   const { data, error } = await supabase
     .from('column')
     .upsert(records)
@@ -31,4 +34,5 @@ export default async function saveData(
   } else {
     console.log('batch upsert completed successfully:', data);
   }
+  // if save successufl -> setstate of loading to stop
 }
