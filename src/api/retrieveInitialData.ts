@@ -7,7 +7,7 @@ import { StoreType, DisplayedColumns } from '../types';
 export default async function retrieveInitialData(
   setStore: React.Dispatch<React.SetStateAction<StoreType>>,
   setDisplayedColumns: React.Dispatch<React.SetStateAction<DisplayedColumns>>,
-  setInitialRetrieve: React.Dispatch<React.SetStateAction<boolean>>
+  setLoaded: React.Dispatch<React.SetStateAction<boolean>>
 ) {
   interface Row {
     column_id: string;
@@ -30,5 +30,5 @@ export default async function retrieveInitialData(
   }
   setStore(store);
   setDisplayedColumns(displayedColumns);
-  setInitialRetrieve(true);
+  setLoaded(true);
 }

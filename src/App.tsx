@@ -14,10 +14,8 @@ import createItems from './utils/createItems';
 import createValues from './utils/createValues';
 import { checkIsValidDrop } from './utils/utility';
 import retrieveInitialData from './api/retrieveInitialData';
-import supabase from './supabaseClient';
-import SupabaseLogin from './components/SupabaseLogin';
 import Nav from './components/Nav';
-import Route from './components/Route';
+import Modal from './components/Modal';
 
 const AppDiv = styled.div`
   display: flex;
@@ -32,10 +30,12 @@ const ColumnsArea = styled.div`
   gap: 10px;
 `;
 
-function App() {
-  const [currentSession, setCurrentSession] = useState<any>();
+interface AppProps {
+  userId: string;
+}
+
+export default function App({ userId }: AppProps) {
   const [loaded, setLoaded] = useState<boolean>(false);
-  const [initalRetrieve, setInitalRetrieve] = useState<boolean>(false);
   const [store, setStore] = useState<StoreType>({});
   const [columns, setColumns] = useState<ColumnsType>({});
   const [items, setItems] = useState<ItemsType>({});
@@ -53,37 +53,20 @@ function App() {
   window.displayedColumns = displayedColumns;
 
   useEffect(() => {
-    /*
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      //setCurrentSession(session);
-      setLoaded(true);
-    });
-    */
-    supabase.auth.onAuthStateChange((_event, session) => {
-      console.log('session state changed');
-      console.log(session);
-      if (currentSession !== session) setCurrentSession(session);
-      setLoaded(true);
-    }); // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
       if (e.altKey && e.shiftKey) {
         console.log('alt+shift!');
         console.log(store);
-        if (currentSession) {
-          if (mode === 'text') {
-            const { appcolumns, appitems } = createItems(store);
-            setColumns(appcolumns);
-            setItems(appitems);
-            setMode('items');
-          } else {
-            // mode ==="items"
-            const newstore = createValues(columns, items);
-            setStore(newstore);
-            setMode('text');
-          }
+        if (mode === 'text') {
+          const { appcolumns, appitems } = createItems(store);
+          setColumns(appcolumns);
+          setItems(appitems);
+          setMode('items');
+        } else {
+          // mode ==="items"
+          const newstore = createValues(columns, items);
+          setStore(newstore);
+          setMode('text');
         }
       }
     };
@@ -91,21 +74,11 @@ function App() {
     return () => {
       window.removeEventListener('keydown', handleKeyPress);
     };
-  }, [currentSession, mode, store, columns, items]);
+  }, [mode, store, columns, items]);
 
-  if (loaded === false) {
+  if (!loaded) {
+    retrieveInitialData(setStore, setDisplayedColumns, setLoaded);
     return <div> </div>;
-  }
-  if (loaded && !currentSession) {
-    return (
-      <AppDiv>
-        <SupabaseLogin />
-      </AppDiv>
-    );
-  }
-
-  if (initalRetrieve === false) {
-    retrieveInitialData(setStore, setDisplayedColumns, setInitalRetrieve);
   }
 
   // mutating state directly in updateStore
@@ -216,7 +189,7 @@ function App() {
     setItems({ ...items });
   };
 
-  if (initalRetrieve) {
+  if (loaded) {
     return (
       <AppDiv>
         <Nav
@@ -227,26 +200,23 @@ function App() {
           display={displayedColumns}
           setDisplay={setDisplayedColumns}
           items={items}
-          userid={currentSession.user.id}
+          userid={userId}
           mode={mode}
         />
         {mode === 'text' && (
-          <>
-            <ColumnsArea>
-              {Object.values(store).map((col) => {
-                return (
-                  <TextColumn
-                    key={col.id}
-                    col={col}
-                    update={(value: string) => updateStore(col.id, value)}
-                    display={displayedColumns}
-                    setDisplay={setDisplayedColumns}
-                  />
-                );
-              })}
-            </ColumnsArea>
-            <Route />
-          </>
+          <ColumnsArea>
+            {Object.values(store).map((col) => {
+              return (
+                <TextColumn
+                  key={col.id}
+                  col={col}
+                  update={(value: string) => updateStore(col.id, value)}
+                  display={displayedColumns}
+                  setDisplay={setDisplayedColumns}
+                />
+              );
+            })}
+          </ColumnsArea>
         )}
         {mode === 'items' && (
           <ColumnsArea>
@@ -286,5 +256,3 @@ function App() {
     );
   }
 }
-
-export default App;

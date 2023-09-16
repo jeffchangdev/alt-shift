@@ -17,6 +17,12 @@ export default function AppRouter() {
   const [loaded, setLoaded] = useState<boolean>(false);
 
   useEffect(() => {
+    /*
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      //setCurrentSession(session);
+      setLoaded(true);
+    });
+    */
     supabase.auth.onAuthStateChange((_event, session) => {
       if (currentSession !== session) setCurrentSession(session);
       setLoaded(true);
@@ -37,7 +43,7 @@ export default function AppRouter() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<App />} />
+        <Route path="/" element={<App userId={currentSession.user.id} />} />
         <Route path="/:columnId" element={<Contents />} />
       </Routes>
     </BrowserRouter>
