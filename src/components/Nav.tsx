@@ -77,33 +77,40 @@ export default function Nav({
             <RiMenuLine onClick={toggleSidebar} />
           )}
         </IconDiv>
-        <IconDiv>
-          <RiSave2Line
-            onClick={() => saveData(mode, store, columns, items, userid)}
-          />
-        </IconDiv>
+        {isExpanded && (
+          <IconDiv>
+            <RiSave2Line
+              onClick={() => saveData(mode, store, columns, items, userid)}
+            />
+          </IconDiv>
+        )}
         {isExpanded && (
           <ColumnList
             store={store}
             setStore={setStore}
             columns={columns}
             setColumns={setColumns}
-            userid={userid}
             display={display}
             setDisplay={setDisplay}
+            userid={userid}
           />
         )}
       </div>
-      <div
-        style={{
-          marginBottom: '30px',
-          fontSize: '25px',
-          display: 'flex',
-          justifyContent: 'center',
-        }}
-      >
-        <RiLogoutBoxLine onClick={handleLogout} style={{ cursor: 'pointer' }} />
-      </div>
+      {isExpanded && (
+        <div
+          style={{
+            marginBottom: '30px',
+            fontSize: '25px',
+            display: 'flex',
+            justifyContent: 'center',
+          }}
+        >
+          <RiLogoutBoxLine
+            onClick={handleLogout}
+            style={{ cursor: 'pointer' }}
+          />
+        </div>
+      )}
     </NavDiv>
   );
 }

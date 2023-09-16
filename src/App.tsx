@@ -15,7 +15,6 @@ import createValues from './utils/createValues';
 import { checkIsValidDrop } from './utils/utility';
 import retrieveInitialData from './api/retrieveInitialData';
 import Nav from './components/Nav';
-import Modal from './components/Modal';
 
 const AppDiv = styled.div`
   display: flex;

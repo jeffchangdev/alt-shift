@@ -36,6 +36,7 @@ export default function ItemsColumn({
   onDragOver,
 }: ItemsColumnProps) {
   const displayValue = display[columnid].displayed ? 'inherit' : 'none';
+  const columnId = text.split(' ').join('%20');
 
   const handleClick = () => {
     const updatedDisplay = { ...display };
@@ -46,7 +47,9 @@ export default function ItemsColumn({
   return (
     <ColumnDiv display={displayValue}>
       <FlexTitleDiv>
-        <ColumnTitle>{text}</ColumnTitle>
+        <ColumnTitle>
+          <a href={`/qrcode/${columnId}`}> {text} </a>
+        </ColumnTitle>
         <div style={{ marginRight: '4px' }} onClick={handleClick}>
           HIDE
         </div>

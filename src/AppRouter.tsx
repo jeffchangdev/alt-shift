@@ -6,6 +6,7 @@ import supabase from './supabaseClient';
 import SupabaseLogin from './components/SupabaseLogin';
 import App from './App';
 import Contents from './components/Contents';
+import QRCodeDisplay from './components/QRCodeDisplay';
 
 const AppDiv = styled.div`
   display: flex;
@@ -45,6 +46,7 @@ export default function AppRouter() {
       <Routes>
         <Route path="/" element={<App userId={currentSession.user.id} />} />
         <Route path="/:columnId" element={<Contents />} />
+        <Route path="/qrcode/:columnId" element={<QRCodeDisplay />} />
       </Routes>
     </BrowserRouter>
   );

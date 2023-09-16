@@ -32,6 +32,7 @@ export default function TextColumn({
 }: TextColumnProps) {
   const [value, setValue] = useState(col.value);
   const displayValue = display[col.text].displayed ? 'inherit' : 'none';
+  const columnid = col.text.split(' ').join('%20');
 
   const handleClick = () => {
     const updatedDisplay = { ...display };
@@ -59,12 +60,13 @@ export default function TextColumn({
   return (
     <ColumnDiv display={displayValue}>
       <FlexTitleDiv>
-        <ColumnTitle>{col.text}</ColumnTitle>
+        <ColumnTitle>
+          <a href={`/qrcode/${columnid}`}> {col.text} </a>
+        </ColumnTitle>
         <div style={{ marginRight: '4px' }} onClick={handleClick}>
           HIDE
         </div>
       </FlexTitleDiv>
-
       <textarea value={value} onChange={handleUpdate} spellCheck="false" />
     </ColumnDiv>
   );
