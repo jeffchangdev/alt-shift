@@ -79,9 +79,9 @@ export default function ColumnList({
     setColumns(newcolumns);
   };
 
-  const handleShow = (colid: string) => {
+  const handleShowHide = (colid: string) => {
     const updatedDisplay = { ...display };
-    updatedDisplay[colid].displayed = true;
+    updatedDisplay[colid].displayed = !display[colid].displayed;
     setDisplay(updatedDisplay);
   };
 
@@ -101,7 +101,15 @@ export default function ColumnList({
         {Object.values(store).map((col) => {
           return (
             <div key={col.id} style={{ display: 'flex' }}>
-              <div onClick={() => handleShow(col.id)}>{col.text}</div>
+              <div
+                onClick={() => handleShowHide(col.id)}
+                style={{
+                  color: display[col.id].displayed ? 'white' : 'gray',
+                  cursor: 'pointer',
+                }}
+              >
+                {col.text}
+              </div>
               {isEditable && (
                 <div
                   onClick={() => handleDelete(col.id, col.db_id)}

@@ -17,7 +17,6 @@ import retrieveInitialData from './api/retrieveInitialData';
 import supabase from './supabaseClient';
 import SupabaseLogin from './components/SupabaseLogin';
 import Nav from './components/Nav';
-import Notification from './components/Notification';
 import Route from './components/Route';
 
 const AppDiv = styled.div`
@@ -42,7 +41,6 @@ function App() {
   const [items, setItems] = useState<ItemsType>({});
   const [draggedId, setDraggedId] = useState<string>('');
   const [mode, setMode] = useState<'text' | 'items'>('text');
-  const [showNotification, setShowNotification] = useState(false);
   // eslint-disable-next-line prettier/prettier
   const [displayedColumns, setDisplayedColumns] = useState<DisplayedColumns>({});
 
@@ -94,14 +92,6 @@ function App() {
       window.removeEventListener('keydown', handleKeyPress);
     };
   }, [currentSession, mode, store, columns, items]);
-
-  const handleShowNotification = () => {
-    setShowNotification(true);
-
-    setTimeout(() => {
-      setShowNotification(false);
-    }, 2000);
-  };
 
   if (loaded === false) {
     return <div> </div>;
