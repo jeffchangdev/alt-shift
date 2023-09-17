@@ -12,7 +12,7 @@ input {
 textarea  
 {  
    font-family:"Ubuntu";
-   background-color: #FCFCFC;
+   background-color: #fff;
    tab-size: 2;
    font-size: 13px;
    border: none;
@@ -25,7 +25,7 @@ textarea
 .sidebar {
   width: 60px;
   height: 100vh;
-  background-color: #232323;
+  background-color: #111111;
   position: fixed; 
   top: 0;
   left: 0;
@@ -53,4 +53,8 @@ ul {
 
 li {
   margin-bottom: 10px;
+}
+
+a {
+  color: black;
 }

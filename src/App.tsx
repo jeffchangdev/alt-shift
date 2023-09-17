@@ -45,11 +45,13 @@ export default function App({ userId }: AppProps) {
 
   console.log('app refreshed!');
   // window.session = currentSession;
+  /*
   window.store = store;
   window.columns = columns;
   window.items = items;
   window.mode = mode;
   window.displayedColumns = displayedColumns;
+  */
 
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {

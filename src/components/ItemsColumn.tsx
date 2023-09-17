@@ -61,12 +61,11 @@ export default function ItemsColumn({
         onDragOver={onDragOver}
         style={{
           flexGrow: 1,
-          border: '1px dashed gray',
-          color: 'gray',
+          // border: '1px dashed gray',
+          // color: 'gray',
+          backgroundColor: 'white',
         }}
-      >
-        column drop zone
-      </div>
+      />
     </ColumnDiv>
   );
 }

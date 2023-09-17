@@ -59,6 +59,10 @@ export default function ColumnList({
       ...columns,
       [text]: createColumn(data[0].db_id, text, text, []),
     });
+    setDisplay({
+      ...display,
+      [text]: { displayed: true },
+    });
     setText('');
   };
 
@@ -73,10 +77,13 @@ export default function ColumnList({
 
     const newstore = { ...store };
     const newcolumns = { ...columns };
+    const newdisplay = { ...display };
     delete newstore[id];
     delete newcolumns[id];
+    delete newdisplay[id];
     setStore(newstore);
     setColumns(newcolumns);
+    setDisplay(newdisplay);
   };
 
   const handleShowHide = (colid: string) => {

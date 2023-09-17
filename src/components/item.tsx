@@ -1,21 +1,15 @@
+/* eslint-disable no-console */
 /* eslint-disable jsx-a11y/mouse-events-have-key-events */
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { useState } from 'react';
 import styled from 'styled-components';
 import { ItemType } from '../types';
 
 const ItemDiv = styled.div`
   display: flex;
-  background-color: #fcfcfc;
-`;
-
-const Icon = styled.p`
-  display: inline;
-  color: gray;
-  margin-left: 2px;
-  font-size: 9px;
-  margin-top: 2.5px;
+  background-color: #fff;
 `;
 
 type ItemProps = {
@@ -29,20 +23,13 @@ type ItemProps = {
   onDragOver: any;
 };
 
-function DropIcon() {
-  return (
-    <Icon>
-      &nbsp;<b>:</b>&nbsp;
-    </Icon>
-  );
-}
-
 export default function Item({
   itemid,
   items,
   level,
   ...eventHandlers
 }: ItemProps) {
+  const [isHovered, setIsHovered] = useState(false);
   const { text, contentids } = items[itemid];
   const spaces = '\u00A0\u00A0'.repeat(level);
 
@@ -56,15 +43,24 @@ export default function Item({
           onDrop={(e) => eventHandlers.onDrop(e, itemid)}
           onDragOver={eventHandlers.onDragOver}
         >
-          {spaces + text}
+          {`${spaces} : ${text}`}
         </div>
         <div
+          style={{
+            color: isHovered ? 'gray' : 'white',
+            flexGrow: 1,
+            textAlign: 'right',
+          }}
           onDragEnd={eventHandlers.onDragEnd}
-          onDrop={(e) => eventHandlers.onNestedDrop(e, itemid)}
+          onDrop={(e) => {
+            eventHandlers.onNestedDrop(e, itemid);
+            setIsHovered(false);
+          }}
           onDragOver={eventHandlers.onDragOver}
-          style={{ marginTop: '-.5px' }}
+          onDragEnter={() => setIsHovered(true)}
+          onDragLeave={() => setIsHovered(false)}
         >
-          <DropIcon />
+          ...
         </div>
       </ItemDiv>
       {contentids.map((itemid: string) => {

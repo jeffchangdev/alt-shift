@@ -34,6 +34,9 @@ const NavDiv = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  box-shadow:
+    0px 12px 16px -10px rgba(0, 0, 0, 0.24),
+    0px 0px 10px 0px rgba(0, 0, 0, 0.22);
 `;
 
 const IconDiv = styled.div`
