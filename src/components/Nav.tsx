@@ -10,8 +10,8 @@ import styled from 'styled-components';
 import { RiMenuLine, RiMenuFoldLine } from 'react-icons/ri';
 import supabase from '../supabaseClient';
 import { StoreType, ColumnsType, ItemsType, DisplayedColumns } from '../types';
-import saveData from '../api/saveData';
 import ColumnList from './ColumnList';
+import SaveButton from './SaveButton';
 
 type NavProps = {
   mode: string;
@@ -95,13 +95,13 @@ export default function Nav({
           />
         )}
         {isExpanded && (
-          <div
-            className="buttondiv"
-            style={{ marginTop: '8px' }}
-            onClick={() => saveData(mode, store, columns, items, userid)}
-          >
-            Save
-          </div>
+          <SaveButton
+            mode={mode}
+            store={store}
+            columns={columns}
+            items={items}
+            userid={userid}
+          />
         )}
       </div>
       {isExpanded && (

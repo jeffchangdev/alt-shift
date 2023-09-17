@@ -11,7 +11,8 @@ export default async function saveData(
   store: StoreType,
   columns: ColumnsType,
   items: ItemsType,
-  userid: string
+  userid: string,
+  setState?: any
 ) {
   const records = [];
   const currentStore = mode === 'text' ? store : createValues(columns, items);
@@ -22,17 +23,23 @@ export default async function saveData(
     records.push({ db_id, user_id: userid, column_id: id, value });
   }
 
+  console.log('saving records...');
   console.log(records);
-  // start rendering notification component
-  // loading...
+
+  setState('...');
   const { data, error } = await supabase
     .from('column')
     .upsert(records)
     .select();
   if (error) {
     console.log('error during batch upsert:', error.message);
+    setState('x');
   } else {
     console.log('batch upsert completed successfully:', data);
+    setState('✔');
+    setTimeout(() => {
+      setState('Save');
+    }, 2000);
   }
   // if save successufl -> setstate of loading to stop
 }
