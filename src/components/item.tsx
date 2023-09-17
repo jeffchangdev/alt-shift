@@ -49,7 +49,8 @@ export default function Item({
           style={{
             color: isHovered ? 'gray' : 'white',
             flexGrow: 1,
-            textAlign: 'right',
+            textAlign: 'left',
+            fontSize: '11px',
           }}
           onDragEnd={eventHandlers.onDragEnd}
           onDrop={(e) => {
@@ -60,7 +61,7 @@ export default function Item({
           onDragEnter={() => setIsHovered(true)}
           onDragLeave={() => setIsHovered(false)}
         >
-          ...
+          ↓
         </div>
       </ItemDiv>
       {contentids.map((itemid: string) => {
