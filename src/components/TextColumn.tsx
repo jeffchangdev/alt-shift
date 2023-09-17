@@ -7,11 +7,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import styled from 'styled-components';
 import { useState } from 'react';
-import { ColumnDiv, ColumnTitle } from './styledComponents';
+import { LiaWindowMinimize } from 'react-icons/lia';
+import { ColumnDiv, ColumnTitle, FlexTitleDiv } from './styledComponents';
 
-const FlexTitleDiv = styled.div`
-  display: flex;
-  justify-content: space-between;
+const Adjust = styled.div`
+  margin-left: 2px;
+  margin-top: 6px;
+  height: 90%;
 `;
 
 type TextColumnProps = {
@@ -63,11 +65,16 @@ export default function TextColumn({
         <ColumnTitle>
           <a href={`/qrcode/${columnid}`}> {col.text} </a>
         </ColumnTitle>
-        <div style={{ marginRight: '4px' }} onClick={handleClick}>
-          HIDE
+        <div
+          style={{ marginRight: '2px', marginTop: '4px' }}
+          onClick={handleClick}
+        >
+          <LiaWindowMinimize />
         </div>
       </FlexTitleDiv>
-      <textarea value={value} onChange={handleUpdate} spellCheck="false" />
+      <Adjust>
+        <textarea value={value} onChange={handleUpdate} spellCheck="false" />
+      </Adjust>
     </ColumnDiv>
   );
 }

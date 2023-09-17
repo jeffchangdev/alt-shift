@@ -7,12 +7,7 @@
 /* eslint-disable no-console */
 import { useState } from 'react';
 import styled from 'styled-components';
-import {
-  RiLogoutBoxLine,
-  RiMenuLine,
-  RiMenuFoldLine,
-  RiSave2Line,
-} from 'react-icons/ri';
+import { RiMenuLine, RiMenuFoldLine } from 'react-icons/ri';
 import supabase from '../supabaseClient';
 import { StoreType, ColumnsType, ItemsType, DisplayedColumns } from '../types';
 import saveData from '../api/saveData';
@@ -34,9 +29,17 @@ const NavDiv = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  align-items: center;
   box-shadow:
     0px 12px 16px -10px rgba(0, 0, 0, 0.24),
     0px 0px 10px 0px rgba(0, 0, 0, 0.22);
+`;
+
+const LogoutWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
 `;
 
 const IconDiv = styled.div`
@@ -72,7 +75,7 @@ export default function Nav({
 
   return (
     <NavDiv className={`sidebar ${isExpanded ? 'expanded' : ''}`}>
-      <div>
+      <div style={{ width: '83%' }}>
         <IconDiv>
           {isExpanded ? (
             <RiMenuFoldLine onClick={toggleSidebar} />
@@ -80,13 +83,6 @@ export default function Nav({
             <RiMenuLine onClick={toggleSidebar} />
           )}
         </IconDiv>
-        {isExpanded && (
-          <IconDiv>
-            <RiSave2Line
-              onClick={() => saveData(mode, store, columns, items, userid)}
-            />
-          </IconDiv>
-        )}
         {isExpanded && (
           <ColumnList
             store={store}
@@ -98,21 +94,26 @@ export default function Nav({
             userid={userid}
           />
         )}
+        {isExpanded && (
+          <div
+            className="buttondiv"
+            style={{ marginTop: '8px' }}
+            onClick={() => saveData(mode, store, columns, items, userid)}
+          >
+            Save
+          </div>
+        )}
       </div>
       {isExpanded && (
-        <div
-          style={{
-            marginBottom: '30px',
-            fontSize: '25px',
-            display: 'flex',
-            justifyContent: 'center',
-          }}
-        >
-          <RiLogoutBoxLine
+        <LogoutWrapper style={{ width: '83%' }}>
+          <div
+            className="buttondiv"
             onClick={handleLogout}
-            style={{ cursor: 'pointer' }}
-          />
-        </div>
+            style={{ marginBottom: '40px', cursor: 'pointer', width: '100%' }}
+          >
+            Logout
+          </div>
+        </LogoutWrapper>
       )}
     </NavDiv>
   );

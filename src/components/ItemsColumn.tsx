@@ -2,16 +2,12 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import styled from 'styled-components';
-import { ColumnDiv, ColumnTitle } from './styledComponents';
+import { LiaWindowMinimize } from 'react-icons/lia';
+import { ColumnDiv, ColumnTitle, FlexTitleDiv } from './styledComponents';
 
 const Adjust = styled.div`
   margin-left: 2px;
-  margin-top: 2px;
-`;
-
-const FlexTitleDiv = styled.div`
-  display: flex;
-  justify-content: space-between;
+  margin-top: 8px;
 `;
 
 type ItemsColumnProps = {
@@ -50,11 +46,14 @@ export default function ItemsColumn({
         <ColumnTitle>
           <a href={`/qrcode/${columnId}`}> {text} </a>
         </ColumnTitle>
-        <div style={{ marginRight: '4px' }} onClick={handleClick}>
-          HIDE
+        <div
+          style={{ marginRight: '2px', marginTop: '4px' }}
+          onClick={handleClick}
+        >
+          <LiaWindowMinimize />
         </div>
       </FlexTitleDiv>
-      <Adjust>{children}</Adjust>
+      <Adjust> {children} </Adjust>
       <div
         onDragEnd={onDragEnd}
         onDrop={(e) => onDrop(e, columnid)}

@@ -18,7 +18,7 @@ textarea
    border: none;
    outline: none;
    resize: none;
-   height: 500px;
+   height: 100%;
    width: 98%
 }
 
@@ -31,10 +31,11 @@ textarea
   left: 0;
   padding-top: 20px;
   color: #fff;
+  transition: width 0.3s ease;
 }
 
 .sidebar.expanded {
-  width: 160px;
+  width: 180px;
 }
 
 .toggle-button {
@@ -57,4 +58,21 @@ li {
 
 a {
   color: black;
+}
+
+.buttondiv {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #111111;
+  color: gray;
+  border-radius: 2px;
+  border: 1px solid gray;
+  height: 22px;
+}
+
+.buttondiv:hover {
+  color: white;
+  border: 1px solid white;
 }
