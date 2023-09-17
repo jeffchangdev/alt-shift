@@ -2,11 +2,13 @@ import { ColumnType, ItemType } from './types';
 
 export const columnData: { [key: string]: ColumnType } = {
   col1: {
+    db_id: 1,
     id: 'col1',
     text: 'futurama',
     contentids: ['item1', 'item10'],
   },
   col2: {
+    db_id: 2,
     id: 'col2',
     text: 'disenchantment',
     contentids: ['item15'],
