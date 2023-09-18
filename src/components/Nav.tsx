@@ -7,7 +7,7 @@
 /* eslint-disable no-console */
 import { useState } from 'react';
 import styled from 'styled-components';
-import { RiMenuLine, RiMenuFoldLine } from 'react-icons/ri';
+import { RiMenuLine, RiMenuFoldLine, RiLogoutBoxRLine } from 'react-icons/ri';
 import supabase from '../supabaseClient';
 import { StoreType, ColumnsType, ItemsType, DisplayedColumns } from '../types';
 import ColumnList from './ColumnList';
@@ -111,7 +111,7 @@ export default function Nav({
             onClick={handleLogout}
             style={{ marginBottom: '35px', cursor: 'pointer', width: '100%' }}
           >
-            Logout
+            <RiLogoutBoxRLine /> Logout
           </div>
         </LogoutWrapper>
       )}

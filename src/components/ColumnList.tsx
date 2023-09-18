@@ -116,13 +116,6 @@ export default function ColumnList({
           +
         </div>
       </div>
-      <div
-        className="buttondiv"
-        onClick={handleEdit}
-        style={{ marginTop: '8px' }}
-      >
-        Edit
-      </div>
       <div style={{ marginTop: '8px' }}>
         {Object.values(store).map((col) => {
           return (
@@ -150,6 +143,13 @@ export default function ColumnList({
             </div>
           );
         })}
+      </div>
+      <div
+        className="buttondiv"
+        onClick={handleEdit}
+        style={{ marginTop: '8px' }}
+      >
+        Edit
       </div>
     </ColumnListDiv>
   );
