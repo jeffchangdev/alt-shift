@@ -23,7 +23,7 @@ export default function QRCodeDisplay() {
   const { columnId } = useParams();
 
   const columnid = columnId?.split(' ').join('%20');
-  const apiUrl = 'http://localhost:5173';
+  const apiUrl = 'http://altshift.netlify.app';
   const value = `${apiUrl}/qrcode/${columnid}`;
 
   return (
