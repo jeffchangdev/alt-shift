@@ -24,7 +24,7 @@ export default function QRCodeDisplay() {
 
   const columnid = columnId?.split(' ').join('%20');
   const apiUrl = 'http://altshift.netlify.app';
-  const value = `${apiUrl}/qrcode/${columnid}`;
+  const value = `${apiUrl}/${columnid}`;
 
   return (
     <CenteredDiv>
