@@ -1,3 +1,9 @@
+:root {
+  --primary-color: #071D49; /* Default primary color */
+  --secondary-color: black;
+  --title-color: #f8f8f8;
+}
+
 body {
   font-family: "Ubuntu";
   font-size: 13px;
@@ -25,7 +31,7 @@ textarea
 .sidebar {
   width: 60px;
   height: 100vh;
-  background-color: #111111;
+  background-color: var(--primary-color);
   position: fixed; 
   top: 0;
   left: 0;
@@ -57,7 +63,7 @@ li {
 }
 
 a {
-  color: black;
+  color: var(--secondary-color);
 }
 
 .buttondiv {
@@ -65,7 +71,7 @@ a {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #111111;
+  background-color: var(--primary-color);
   color: gray;
   border-radius: 2px;
   border: 1px solid gray;

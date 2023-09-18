@@ -33,5 +33,5 @@ export const FlexTitleDiv = styled.div`
     0px 2px 4px 0px rgba(0, 0, 0, 0.14),
     0px 3px 3px -2px rgba(0, 0, 0, 0.2),
     0px 1px 8px 0px rgba(0, 0, 0, 0.12);
-  background-color: #f8f8f8;
+  background-color: var(--title-color);
 `;

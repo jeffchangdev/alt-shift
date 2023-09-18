@@ -6,6 +6,10 @@ import {
 import supabase from '../supabaseClient';
 
 export default function SupabaseLogin() {
+  const primaryColor = getComputedStyle(
+    document.documentElement
+  ).getPropertyValue('--primary-color');
+
   // eslint-disable-next-line no-console
   console.log('login component rendered');
   return (
@@ -18,8 +22,7 @@ export default function SupabaseLogin() {
           variables: {
             default: {
               colors: {
-                brand: 'blue',
-                brandAccent: 'darkblue',
+                brand: primaryColor,
               },
             },
           },
