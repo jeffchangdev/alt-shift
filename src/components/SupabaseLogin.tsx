@@ -23,6 +23,7 @@ export default function SupabaseLogin() {
             default: {
               colors: {
                 brand: primaryColor,
+                brandAccent: primaryColor,
               },
             },
           },
