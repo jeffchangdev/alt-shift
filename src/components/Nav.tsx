@@ -109,7 +109,7 @@ export default function Nav({
           <div
             className="buttondiv"
             onClick={handleLogout}
-            style={{ marginBottom: '40px', cursor: 'pointer', width: '100%' }}
+            style={{ marginBottom: '35px', cursor: 'pointer', width: '100%' }}
           >
             Logout
           </div>

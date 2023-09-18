@@ -17,6 +17,14 @@ export default function SupabaseLogin() {
       <Auth
         supabaseClient={supabase}
         providers={[]}
+        localization={{
+          variables: {
+            sign_in: {
+              email_label: 'Email address',
+              password_label: 'Password',
+            },
+          },
+        }}
         appearance={{
           theme: ThemeSupa,
           variables: {

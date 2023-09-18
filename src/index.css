@@ -76,9 +76,11 @@ a {
   border-radius: 2px;
   border: 1px solid gray;
   height: 22px;
+  transition: all 0.3s ease;  
 }
 
 .buttondiv:hover {
-  color: white;
+  color: black;
+  background-color: white;
   border: 1px solid white;
 }
