@@ -38,6 +38,7 @@ textarea
   padding-top: 20px;
   color: #fff;
   transition: width 0.3s ease;
+  z-index: 1;
 }
 
 .sidebar.expanded {
@@ -83,4 +84,13 @@ a {
   color: black;
   background-color: white;
   border: 1px solid white;
+}
+
+::-webkit-scrollbar {
+  width: 3px; /* Adjust the width as needed */
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2); /* Adjust the color as needed */
+  border-radius: 3px; /* Adjust the border radius as needed */
 }

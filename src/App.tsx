@@ -23,10 +23,12 @@ const AppDiv = styled.div`
 
 const ColumnsArea = styled.div`
   height: 95vh;
+  width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: stretch;
   gap: 10px;
+  margin-left: 180px;
 `;
 
 interface AppProps {
@@ -42,8 +44,9 @@ export default function App({ userId }: AppProps) {
   const [items, setItems] = useState<ItemsType>({});
   // const [draggedId, setDraggedId] = useState<string>('');
   const [mode, setMode] = useState<'text' | 'items'>('text');
-  // eslint-disable-next-line prettier/prettier
-  const [displayedColumns, setDisplayedColumns] = useState<DisplayedColumns>({});
+  const [displayedColumns, setDisplayedColumns] = useState<DisplayedColumns>(
+    {}
+  );
 
   // no need to refresh entire app when drag
   let draggedId = '';

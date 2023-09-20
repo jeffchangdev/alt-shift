@@ -33,7 +33,7 @@ export default function ItemsColumn({
   onDragOver,
 }: ItemsColumnProps) {
   console.log(`${text} rendered!`);
-  const displayValue = display[columnid].displayed ? 'inherit' : 'none';
+  const displayValue = display[columnid].displayed ? 'flex' : 'none';
   const columnId = text.split(' ').join('%20');
 
   const handleClick = () => {
@@ -43,7 +43,7 @@ export default function ItemsColumn({
   };
 
   return (
-    <ColumnDiv display={displayValue}>
+    <div style={{ display: displayValue, flexDirection: 'column' }}>
       <FlexTitleDiv>
         <ColumnTitle>
           <a href={`/qrcode/${columnId}`}> {text} </a>
@@ -55,18 +55,20 @@ export default function ItemsColumn({
           <LiaWindowMinimize />
         </div>
       </FlexTitleDiv>
-      <Adjust> {children} </Adjust>
-      <div
-        onDragEnd={onDragEnd}
-        onDrop={(e) => onDrop(e, columnid)}
-        onDragOver={onDragOver}
-        style={{
-          flexGrow: 1,
-          // border: '1px dashed gray',
-          // color: 'gray',
-          backgroundColor: 'white',
-        }}
-      />
-    </ColumnDiv>
+      <ColumnDiv>
+        <Adjust> {children} </Adjust>
+        <div
+          onDragEnd={onDragEnd}
+          onDrop={(e) => onDrop(e, columnid)}
+          onDragOver={onDragOver}
+          style={{
+            flexGrow: 1,
+            // border: '1px dashed gray',
+            // color: 'gray',
+            backgroundColor: 'white',
+          }}
+        />
+      </ColumnDiv>
+    </div>
   );
 }

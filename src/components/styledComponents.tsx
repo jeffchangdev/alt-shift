@@ -8,7 +8,7 @@ type ColumnDivProps = {
 export const ColumnDiv = styled.div<ColumnDivProps>`
   display: flex;
   flex-direction: column;
-  width: 250px;
+  min-width: 250px;
   height: 100%;
   align-items: stretch;
   background-color: white;
@@ -17,6 +17,7 @@ export const ColumnDiv = styled.div<ColumnDivProps>`
     0px 3px 1px -2px rgba(0, 0, 0, 0.2),
     0px 1px 5px 0px rgba(0, 0, 0, 0.12);
   display: ${(props) => props.display};
+  overflow: auto;
 `;
 
 export const ColumnTitle = styled.div`
@@ -24,7 +25,8 @@ export const ColumnTitle = styled.div`
 `;
 
 export const FlexTitleDiv = styled.div`
-  height: 6%;
+  position: sticky;
+  min-height: 6%;
   padding: 4px;
   display: flex;
   justify-content: space-between;

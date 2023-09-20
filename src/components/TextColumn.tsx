@@ -33,7 +33,7 @@ export default function TextColumn({
   setDisplay,
 }: TextColumnProps) {
   const [value, setValue] = useState(col.value);
-  const displayValue = display[col.text].displayed ? 'inherit' : 'none';
+  const displayValue = display[col.text].displayed ? 'flex' : 'none';
   const columnid = col.text.split(' ').join('%20');
 
   const handleClick = () => {
@@ -60,7 +60,7 @@ export default function TextColumn({
   };
 
   return (
-    <ColumnDiv display={displayValue}>
+    <div style={{ display: displayValue, flexDirection: 'column' }}>
       <FlexTitleDiv>
         <ColumnTitle>
           <a href={`/qrcode/${columnid}`}> {col.text} </a>
@@ -72,9 +72,11 @@ export default function TextColumn({
           <LiaWindowMinimize />
         </div>
       </FlexTitleDiv>
-      <Adjust>
-        <textarea value={value} onChange={handleUpdate} spellCheck="false" />
-      </Adjust>
-    </ColumnDiv>
+      <ColumnDiv>
+        <Adjust>
+          <textarea value={value} onChange={handleUpdate} spellCheck="false" />
+        </Adjust>
+      </ColumnDiv>
+    </div>
   );
 }
