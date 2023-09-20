@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import supabase from './supabaseClient';
-import SupabaseLogin from './components/SupabaseLogin';
+import Login from './components/SupabaseLogin';
 import App from './App';
 import Contents from './components/Contents';
 import QRCodeDisplay from './components/QRCodeDisplay';
@@ -36,7 +36,7 @@ export default function AppRouter() {
   if (loaded && !currentSession) {
     return (
       <AppDiv>
-        <SupabaseLogin />
+        <Login />
       </AppDiv>
     );
   }

@@ -5,7 +5,7 @@ import {
 } from '@supabase/auth-ui-shared';
 import supabase from '../supabaseClient';
 
-export default function SupabaseLogin() {
+export default function Login() {
   const primaryColor = getComputedStyle(
     document.documentElement
   ).getPropertyValue('--primary-color');
@@ -16,7 +16,7 @@ export default function SupabaseLogin() {
     <div style={{ width: '300px' }}>
       <Auth
         supabaseClient={supabase}
-        providers={[]}
+        providers={['google', 'facebook', 'twitter']}
         localization={{
           variables: {
             sign_in: {

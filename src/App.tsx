@@ -34,16 +34,23 @@ interface AppProps {
 }
 
 export default function App({ userId }: AppProps) {
+  console.log('app refreshed!');
+
   const [loaded, setLoaded] = useState<boolean>(false);
   const [store, setStore] = useState<StoreType>({});
   const [columns, setColumns] = useState<ColumnsType>({});
   const [items, setItems] = useState<ItemsType>({});
-  const [draggedId, setDraggedId] = useState<string>('');
+  // const [draggedId, setDraggedId] = useState<string>('');
   const [mode, setMode] = useState<'text' | 'items'>('text');
   // eslint-disable-next-line prettier/prettier
   const [displayedColumns, setDisplayedColumns] = useState<DisplayedColumns>({});
 
-  console.log('app refreshed!');
+  // no need to refresh entire app when drag
+  let draggedId = '';
+  function setDraggedId(id: string) {
+    draggedId = id;
+  }
+
   // window.session = currentSession;
   /*
   window.store = store;

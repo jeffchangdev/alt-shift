@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -31,6 +32,7 @@ export default function ItemsColumn({
   onDrop,
   onDragOver,
 }: ItemsColumnProps) {
+  console.log(`${text} rendered!`);
   const displayValue = display[columnid].displayed ? 'inherit' : 'none';
   const columnId = text.split(' ').join('%20');
 
