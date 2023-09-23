@@ -97,7 +97,5 @@ a {
 
 button:not([type]) {
   pointer-events: none !important; 
-  background-color: #ccc; 
-  color: #888; 
   cursor: not-allowed !important;
 }
