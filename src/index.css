@@ -94,3 +94,10 @@ a {
   background: rgba(0, 0, 0, 0.2); /* Adjust the color as needed */
   border-radius: 3px; /* Adjust the border radius as needed */
 }
+
+button:not([type]) {
+  pointer-events: none !important; 
+  background-color: #ccc; 
+  color: #888; 
+  cursor: not-allowed !important;
+}

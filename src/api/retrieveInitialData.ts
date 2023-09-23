@@ -4,10 +4,32 @@
 import supabase from '../supabaseClient';
 import { StoreType, DisplayedColumns } from '../types';
 
+const intro = `this is alt shift!
+  use two spaces to indent
+  press alt shift for drag and drop
+    press alt shift again to type
+  add and delete columns in the menu
+  save after editing
+  click column title for QR code
+
+storage box (drag me to closet)
+  4x AA batteries
+  2x pilot v5 pens
+  small ikea hex wrenches
+  measuring tape
+  screwdriver
+  container
+
+bundle of wires (drag next to container)
+  iphone charger
+  kindle charger
+  usb to usb c`;
+
 export default async function retrieveInitialData(
   setStore: React.Dispatch<React.SetStateAction<StoreType>>,
   setDisplayedColumns: React.Dispatch<React.SetStateAction<DisplayedColumns>>,
-  setLoaded: React.Dispatch<React.SetStateAction<boolean>>
+  setLoaded: React.Dispatch<React.SetStateAction<boolean>>,
+  userId: string
 ) {
   interface Row {
     column_id: string;
@@ -17,6 +39,15 @@ export default async function retrieveInitialData(
     value: string;
   }
   // NEED TO ADD ERROR HANDLING LATER
+  const { data } = await supabase.from('column').select('*');
+
+  if (data && data.length === 0) {
+    await supabase.from('column').insert([
+      { user_id: userId, column_id: 'welcome', value: intro },
+      { user_id: userId, column_id: 'closet', value: '' },
+    ]);
+  }
+
   const { data: column } = await supabase.from('column').select('*');
   const columndata = column as Row[];
   console.log(column);

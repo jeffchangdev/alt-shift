@@ -8,7 +8,7 @@ type ColumnDivProps = {
 export const ColumnDiv = styled.div<ColumnDivProps>`
   display: flex;
   flex-direction: column;
-  min-width: 250px;
+  min-width: 275px;
   height: 100%;
   align-items: stretch;
   background-color: white;

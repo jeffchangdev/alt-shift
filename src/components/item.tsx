@@ -10,6 +10,7 @@ import { ItemType } from '../types';
 const ItemDiv = styled.div`
   display: flex;
   background-color: #fff;
+  max-width: 275px;
 `;
 
 type ItemProps = {
@@ -37,32 +38,42 @@ export default function Item({
     <>
       <ItemDiv>
         <div
+          style={{ overflowWrap: 'break-word' }}
           draggable
           onDragEnd={eventHandlers.onDragEnd}
           onDragStart={(e) => eventHandlers.onDragStart(e, itemid)}
           onDrop={(e) => eventHandlers.onDrop(e, itemid)}
           onDragOver={eventHandlers.onDragOver}
         >
-          {`${spaces} : ${text}`}
+          {text.length > 0 ? (
+            `${spaces} : ${text}`
+          ) : (
+            <span style={{ color: 'white' }}> : </span>
+          )}
         </div>
-        <div
-          style={{
-            color: isHovered ? 'gray' : 'white',
-            flexGrow: 1,
-            textAlign: 'left',
-            fontSize: '11px',
-          }}
-          onDragEnd={eventHandlers.onDragEnd}
-          onDrop={(e) => {
-            eventHandlers.onNestedDrop(e, itemid);
-            setIsHovered(false);
-          }}
-          onDragOver={eventHandlers.onDragOver}
-          onDragEnter={() => setIsHovered(true)}
-          onDragLeave={() => setIsHovered(false)}
-        >
-          ↓
-        </div>
+        {text.length > 0 ? (
+          <div
+            style={{
+              color: isHovered ? 'gray' : 'white',
+              flexGrow: 1,
+              textAlign: 'left',
+              fontSize: '11px',
+              minWidth: '3%',
+            }}
+            onDragEnd={eventHandlers.onDragEnd}
+            onDrop={(e) => {
+              eventHandlers.onNestedDrop(e, itemid);
+              setIsHovered(false);
+            }}
+            onDragOver={eventHandlers.onDragOver}
+            onDragEnter={() => setIsHovered(true)}
+            onDragLeave={() => setIsHovered(false)}
+          >
+            ↓
+          </div>
+        ) : (
+          <div />
+        )}
       </ItemDiv>
       {contentids.map((itemid: string) => {
         return (

@@ -88,7 +88,8 @@ export default function App({ userId }: AppProps) {
   }, [mode, store, columns, items]);
 
   if (!loaded) {
-    retrieveInitialData(setStore, setDisplayedColumns, setLoaded);
+    console.log('userId is', userId);
+    retrieveInitialData(setStore, setDisplayedColumns, setLoaded, userId);
     return <div> </div>;
   }
 
