@@ -5,9 +5,9 @@ import supabase from '../supabaseClient';
 import { StoreType, DisplayedColumns } from '../types';
 
 const intro = `this is alt shift!
-  use two spaces for one indent
+  use two spaces per indent
   press alt shift for drag and drop
-    press alt shift for text
+    press alt shift again for text
   add and delete columns from the menu
   remember to save!
   click column title for QR code
