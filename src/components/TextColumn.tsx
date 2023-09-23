@@ -63,7 +63,9 @@ export default function TextColumn({
     <div style={{ display: displayValue, flexDirection: 'column' }}>
       <FlexTitleDiv>
         <ColumnTitle>
-          <a href={`/qrcode/${columnid}`}> {col.text} </a>
+          <a href={`/qrcode/${columnid}`} target="_blank" rel="noreferrer">
+            {col.text}
+          </a>
         </ColumnTitle>
         <div
           style={{ marginRight: '2px', marginTop: '4px' }}

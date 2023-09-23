@@ -46,7 +46,9 @@ export default function ItemsColumn({
     <div style={{ display: displayValue, flexDirection: 'column' }}>
       <FlexTitleDiv>
         <ColumnTitle>
-          <a href={`/qrcode/${columnId}`}> {text} </a>
+          <a href={`/qrcode/${columnId}`} target="_blank" rel="noreferrer">
+            {text}
+          </a>
         </ColumnTitle>
         <div
           style={{ marginRight: '2px', marginTop: '4px' }}
