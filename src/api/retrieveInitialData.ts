@@ -10,7 +10,7 @@ const intro = `this is alt shift!
     press alt shift again for text
   add and delete columns from the menu
   remember to save!
-  click column title for QR code
+  click column title for QR code  
 
 storage box (drag me to closet)
   4x AA batteries
